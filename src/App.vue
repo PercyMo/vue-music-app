@@ -2,7 +2,8 @@
   <div id="app">
     hello world
     hello world
-    hello world
+    he llo world
+    
   </div>
 </template>
 
