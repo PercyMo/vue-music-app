@@ -11,7 +11,7 @@
 </script>
 
 <style scoped long="stylus" rel="stylesheet/stylus">
-  @import '~common/stylus/variable'
+  /* @import '~common/stylus/variable' */
 
   /* #app
     color $color-theme */
