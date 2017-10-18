@@ -3,6 +3,11 @@ export const commonParams = {
     inCharset: 'utf-8',
     outCharset: 'utf-8',
     notice: 0,
-    platform: 'h5',
-    needNewCode: 1
+    format: 'jsonp'
 }
+
+export const options = {
+	param: 'jsonpCallback'
+}
+
+export const ERR_OK = 0
