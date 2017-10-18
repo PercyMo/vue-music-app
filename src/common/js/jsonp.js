@@ -20,5 +20,6 @@ export function param(data) {
         let value = data[k] !== undefined ? data[k] : ''
         url += '&' + k + '=' + encodeURIComponent(value)
     }
-    return url ? url.substring(1) : ''
+    //同样提取提取字符串，推荐使用slice，不建议使用substring
+    return url ? url.slice(1) : ''
 }
