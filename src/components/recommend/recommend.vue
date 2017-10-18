@@ -1,17 +1,24 @@
 <template>
     <div class="recommend">
-        推荐页面
+		<slider>
+			<div class="slider-item" v-for="item in recommends" :key="item.id">
+				<a :href="item.linkUrl">
+					<img :src="item.picUrl"></img>
+				</a>
+			</div>
+		</slider>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-	import getRecommend from 'api/recommend'
+	import Slider from 'base/slider/slider'
+	import {getRecommend} from 'api/recommend'
 	import {ERR_OK} from 'api/config'
 	
     export default {
     	data() {
     		return {
-    			info: []
+    			recommends: []
     		}
     	},
     	created() {
@@ -21,11 +28,14 @@
     		_getRecommend() {
     			getRecommend().then((res) => {
     				if(res.code === ERR_OK) {
-    					this.info = res.data.slider
+    					this.recommends = res.data.slider
     				}
     			})
     		}
-    	}
+		},
+		components: {
+			Slider
+		}
     }
 </script>
 
