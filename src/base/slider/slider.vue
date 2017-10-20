@@ -19,7 +19,7 @@
         props: {
             loop: {
                 type: Boolean,
-                default: false
+                default: true
             }
         },
     	data() {
@@ -33,20 +33,15 @@
                 this._setSlideWidth()
                 this._initDots()
                 this._initSlider()
-                // if (this.showDot) {
-                // }
+
                 // if (this.autoPlay) {
                 //   this._play()
                 // }
             }, 100)
-
-            // this.$nextTick(() => {
-            //     this._setSlideWidth()
-            //     this._initSlider()
-            // })
     	},
     	methods: {
             _setSlideWidth() {
+                //children这类公用属性，直接绑定在this实例上
                 this.children = this.$refs.sliderGroup.children
 
                 let width = 0
@@ -57,6 +52,10 @@
 
                     child.style.width = sliderWidth + 'px'
                     width += sliderWidth
+                }
+
+                if (this.loop) {
+                    width += sliderWidth * 2
                 }
 
                 this.$refs.sliderGroup.style.width = width + 'px'
@@ -79,7 +78,11 @@
                 })
 
                 this.slider.on('scrollEnd', () => {
-                    this.currentPageIndex = this.slider.getCurrentPage().pageX
+                    let pageIndex = this.slider.getCurrentPage().pageX
+                    if (this.loop) {
+                        pageIndex -= 1
+                    }
+                    this.currentPageIndex = pageIndex
                 })
             },
             _initDots() {
@@ -121,6 +124,8 @@
                 display inline-block
                 border-radius 50%
                 background $color-text-l
+                transition all .3s
+                -webkit-transform transition3d(0, 0, 0)
                 &.active
                     width 20px
                     border-radius 5px
