@@ -15,6 +15,13 @@
     import BScroll from 'better-scroll'
 	
     export default {
+        name: 'slider',
+        props: {
+            loop: {
+                type: Boolean,
+                default: false
+            }
+        },
     	data() {
     		return {
                 dots: [],
@@ -70,6 +77,10 @@
                     snapThreshold: 0.3,
                     snapSpeed: 400
                 })
+
+                this.slider.on('scrollEnd', () => {
+                    this.currentPageIndex = this.slider.getCurrentPage().pageX
+                })
             },
             _initDots() {
                 this.dots = new Array(this.children.length)
@@ -79,8 +90,12 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+    @import "~common/stylus/variable"
+    
     .slider
+        position relative
         min-height 1px
+        overflow hidden
         .slider-group
             position relative
             overflow hidden
@@ -92,4 +107,22 @@
                     img
                         display block
                         width 100%
+        .dots
+            width 100%
+            position absolute
+            left 0
+            bottom 12px
+            font-size 0
+            text-align center
+            .dot
+                margin 0 4px
+                width 8px
+                height 8px
+                display inline-block
+                border-radius 50%
+                background $color-text-l
+                &.active
+                    width 20px
+                    border-radius 5px
+                    background $color-text-ll
 </style>
