@@ -13,7 +13,7 @@
 <script type="text/ecmascript-6">
     import {addClass} from 'common/js/dom'
     import BScroll from 'better-scroll'
-	
+    
     export default {
         name: 'slider',
         props: {
@@ -22,13 +22,13 @@
                 default: true
             }
         },
-    	data() {
-    		return {
+        data() {
+            return {
                 dots: [],
                 currentPageIndex: 0
-    		}
-    	},
-    	mounted() {
+            }
+        },
+        mounted() {
             setTimeout(() => {
                 this._setSlideWidth()
                 this._initDots()
@@ -38,8 +38,8 @@
                 //   this._play()
                 // }
             }, 100)
-    	},
-    	methods: {
+        },
+        methods: {
             _setSlideWidth() {
                 //children这类公用属性，直接绑定在this实例上
                 this.children = this.$refs.sliderGroup.children
@@ -88,7 +88,7 @@
             _initDots() {
                 this.dots = new Array(this.children.length)
             }
-    	}
+        }
     }
 </script>
 
