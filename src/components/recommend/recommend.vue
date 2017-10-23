@@ -46,7 +46,6 @@
         },
         created() {
             this._getRecommend()
-
             this._getDiscList()
         },
         methods: {

@@ -20,6 +20,14 @@
             loop: {
                 type: Boolean,
                 default: true
+            },
+            autoplay: {
+                type: Boolean,
+                default: true
+            },
+            interval: {
+                type: Number,
+                default: 4000
             }
         },
         data() {
@@ -34,10 +42,10 @@
                 this._initDots()
                 this._initSlider()
 
-                // if (this.autoPlay) {
-                //   this._play()
-                // }
-            }, 100)
+                if (this.autoplay) {
+                  this._play()
+                }
+            }, 20)
         },
         methods: {
             _setSlideWidth() {
@@ -74,7 +82,8 @@
                     snap: true,
                     snapLoop: this.loop,
                     snapThreshold: 0.3,
-                    snapSpeed: 400
+                    snapSpeed: 400,
+                    click: true
                 })
 
                 this.slider.on('scrollEnd', () => {
@@ -83,10 +92,29 @@
                         pageIndex -= 1
                     }
                     this.currentPageIndex = pageIndex
+
+                    if (this.autoplay) {
+                        this._play()
+                    }
+                })
+
+                this.slider.on('beforeScrollStart', () => {
+                    if (this.autoplay) {
+                        clearTimeout(this.timer)
+                    }
                 })
             },
             _initDots() {
                 this.dots = new Array(this.children.length)
+            },
+            _play() {
+                let pageIndex = this.currentPageIndex + 1
+                if (this.loop) {
+                    pageIndex += 1
+                }
+                this.timer = setTimeout(() => {
+                    this.slider.goToPage(pageIndex, 0 ,400)
+                }, this.interval)
             }
         }
     }
