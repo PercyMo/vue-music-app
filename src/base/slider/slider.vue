@@ -102,17 +102,22 @@
         .slider-group
             position relative
             overflow hidden
+            white-space nowrap
             .slider-item
                 float left
+                box-sizing border-box
+                overflow hidden
                 a
                     display block
+                    width 100%
+                    overflow hidden
                     text-decoration none
-                    img
-                        display block
-                        width 100%
+                img
+                    display block
+                    width 100%
         .dots
-            width 100%
             position absolute
+            right 0
             left 0
             bottom 12px
             font-size 0
