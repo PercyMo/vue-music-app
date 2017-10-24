@@ -45,10 +45,15 @@
                 if (this.autoplay) {
                   this._play()
                 }
+
+                window.addEventListener('resize', () => {
+                    this._setSlideWidth(true)
+                    this.slider.refresh()
+                })
             }, 20)
         },
         methods: {
-            _setSlideWidth() {
+            _setSlideWidth(isRefresh) {
                 //children这类公用属性，直接绑定在this实例上
                 this.children = this.$refs.sliderGroup.children
 
@@ -62,7 +67,7 @@
                     width += sliderWidth
                 }
 
-                if (this.loop) {
+                if (this.loop && !isRefresh) {
                     width += sliderWidth * 2
                 }
 
@@ -82,8 +87,7 @@
                     snap: true,
                     snapLoop: this.loop,
                     snapThreshold: 0.3,
-                    snapSpeed: 400,
-                    click: true
+                    snapSpeed: 400
                 })
 
                 this.slider.on('scrollEnd', () => {
