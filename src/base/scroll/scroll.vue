@@ -39,7 +39,6 @@
         watch: {
             data() {
                 setTimeout(() => {
-                    console.log('执行刷新scroll')
                     this.refresh()
                 }, this.refreshDelay)
             }

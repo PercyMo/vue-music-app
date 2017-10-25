@@ -45,12 +45,15 @@
                 if (this.autoplay) {
                   this._play()
                 }
-
-                window.addEventListener('resize', () => {
-                    this._setSlideWidth(true)
-                    this.slider.refresh()
-                })
             }, 20)
+
+            window.addEventListener('resize', () => {
+                if (!this.slider) {
+                    return
+                }
+                this._setSlideWidth(true)
+                this.slider.refresh()
+            })
         },
         methods: {
             _setSlideWidth(isRefresh) {
