@@ -2,7 +2,7 @@
     <div class="recommend">
         <scroll class="recommend-content" :data="discList">
             <div>
-                <div class="slider-wrapper" v-if="recommends.length" ref="sliderWrapper">
+                <!-- <div class="slider-wrapper" v-if="recommends.length" ref="sliderWrapper">
                     <slider>
                         <div v-for="item in recommends" :key="item.id">
                             <a :href="item.linkUrl">
@@ -10,7 +10,7 @@
                             </a>
                         </div>
                     </slider>
-                </div>
+                </div> -->
                 <div class="recommend-list">
                     <h1 class="list-title">热门歌单推荐</h1>
                     <ul>
@@ -34,7 +34,7 @@
 <script type="text/ecmascript-6">
     import Slider from 'base/slider/slider'
     import Scroll from 'base/scroll/scroll'
-    import {getRecommend} from 'api/recommend'
+    import {getRecommend, getDiscList} from 'api/recommend'
     import {ERR_OK} from 'api/config'
     
     export default {
@@ -57,58 +57,9 @@
                 })
             },
             _getDiscList() {
-                setTimeout(() => {
-                    this.discList = [
-                        {
-                            dissid: 1,
-                            imgurl: 'https://y.gtimg.cn/music/photo/radio/track_radio_307_13_1.jpg?max_age=2592000&max_age=2592000',
-                            creator: {
-                                name: '清凉暖夏'
-                            },
-                            dissname: '后摇人生采样，通往心灵的独白'
-                        },
-                        {
-                            dissid: 2,
-                            imgurl: 'https://y.gtimg.cn/music/photo/radio/track_radio_199_13_1.jpg?max_age=2592000&max_age=2592000',
-                            creator: {
-                                name: '浪岸情拍'
-                            },
-                            dissname: '这才是游戏：芯片电子掀起的复古情怀'
-                        },
-                        {
-                            dissid: 3,
-                            imgurl: 'https://y.gtimg.cn/music/photo/radio/track_radio_307_13_1.jpg?max_age=2592000&max_age=2592000',
-                            creator: {
-                                name: '清凉暖夏'
-                            },
-                            dissname: '后摇人生采样，通往心灵的独白'
-                        },
-                        {
-                            dissid: 4,
-                            imgurl: 'https://y.gtimg.cn/music/photo/radio/track_radio_199_13_1.jpg?max_age=2592000&max_age=2592000',
-                            creator: {
-                                name: '浪岸情拍'
-                            },
-                            dissname: '这才是游戏：芯片电子掀起的复古情怀'
-                        },
-                        {
-                            dissid: 5,
-                            imgurl: 'https://y.gtimg.cn/music/photo/radio/track_radio_307_13_1.jpg?max_age=2592000&max_age=2592000',
-                            creator: {
-                                name: '清凉暖夏'
-                            },
-                            dissname: '后摇人生采样，通往心灵的独白'
-                        },
-                        {
-                            dissid: 6,
-                            imgurl: 'https://y.gtimg.cn/music/photo/radio/track_radio_199_13_1.jpg?max_age=2592000&max_age=2592000',
-                            creator: {
-                                name: '浪岸情拍'
-                            },
-                            dissname: '这才是游戏：芯片电子掀起的复古情怀'
-                        }
-                    ]
-                }, 100)
+                getDiscList().then((res) => {
+                    console.log(res)
+                })
             },
             selectItem(item) {
                 this.$router.push({

@@ -17,6 +17,7 @@
                 </li>
             </ul>
         </scroll>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -43,7 +44,6 @@
                 })
             },
             selectItem(item) {
-                console.log(item)
                 this.$router.push({
                     path: `/rank/${item.id}`
                 })
