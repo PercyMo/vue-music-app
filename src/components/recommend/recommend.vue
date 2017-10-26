@@ -2,7 +2,7 @@
     <div class="recommend">
         <scroll class="recommend-content" :data="discList">
             <div>
-                <!-- <div class="slider-wrapper" v-if="recommends.length" ref="sliderWrapper">
+                <div class="slider-wrapper" v-if="recommends.length" ref="sliderWrapper">
                     <slider>
                         <div v-for="item in recommends" :key="item.id">
                             <a :href="item.linkUrl">
@@ -10,7 +10,7 @@
                             </a>
                         </div>
                     </slider>
-                </div> -->
+                </div>
                 <div class="recommend-list">
                     <h1 class="list-title">热门歌单推荐</h1>
                     <ul>
@@ -58,7 +58,7 @@
             },
             _getDiscList() {
                 getDiscList().then((res) => {
-                    console.log(res)
+                    this.discList = res.data.list
                 })
             },
             selectItem(item) {

@@ -55,6 +55,9 @@
                 this.slider.refresh()
             })
         },
+        destroyed() {
+            clearTimeout(this.timer)
+        },
         methods: {
             _setSlideWidth(isRefresh) {
                 //children这类公用属性，直接绑定在this实例上
