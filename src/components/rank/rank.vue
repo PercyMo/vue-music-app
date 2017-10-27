@@ -4,7 +4,7 @@
             <ul>
                 <li @click="selectItem(item)" class="rank-item" v-for="item in topList">
                     <div class="icon" :key="item.id">
-                        <img width="100" height="100" :src="item.picUrl">
+                        <img width="100" height="100" v-lazy="item.picObj">
                     </div>
                     <ul class="songlist">
                         <li class="song" v-for="(song, index) in item.songList" :key="index">
@@ -16,6 +16,9 @@
                     </ul>
                 </li>
             </ul>
+            <div class="loading-container" v-if="!topList.length">
+                <loading></loading>
+            </div>
         </scroll>
         <router-view></router-view>
     </div>
@@ -25,6 +28,7 @@
     import Scroll from 'base/scroll/scroll'
     import {getTopList} from 'api/rank'
     import {ERR_OK} from 'api/config'
+    import ImgDefault from 'common/image/album.png'
 
     export default {
         data() {
@@ -39,6 +43,12 @@
             _getTopList() {
                 getTopList().then((res) => {
                     if (res.code === ERR_OK) {
+                        res.data.topList.forEach((i) => {
+                            i.picObj = {
+                                src: i.picUrl,
+                                loading: ImgDefault
+                            }
+                        })
                         this.topList = res.data.topList
                     }
                 })
@@ -92,4 +102,9 @@
                     .song
                         no-wrap()
                         line-height 26px
+        .loading-container
+            position: absolute
+            width: 100%
+            top: 50%
+            transform: translateY(-50%)
 </style>
