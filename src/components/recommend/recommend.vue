@@ -1,12 +1,12 @@
 <template>
     <div class="recommend">
-        <scroll class="recommend-content" :data="discList">
+        <scroll ref="scroll" class="recommend-content" :data="discList">
             <div>
                 <div class="slider-wrapper" v-if="recommends.length" ref="sliderWrapper">
                     <slider>
                         <div v-for="item in recommends" :key="item.id">
                             <a :href="item.linkUrl">
-                                <img :src="item.picUrl"></img>
+                                <img @load="loadImage" :src="item.picUrl"></img>
                             </a>
                         </div>
                     </slider>
@@ -16,11 +16,11 @@
                     <ul>
                         <li v-for="item in discList" class="recommend-item" @click="selectItem(item)" :key="item.dissid">
                             <div class="icon">
-                                <img :src="item.imgurl" width="60" height="60">
+                                <img v-lazy="item.imgurl" width="60" height="60">
                             </div>
                             <div class="text">
-                                <h2 class="name">{{item.creator.name}}</h2>
-                                <p class="desc">{{item.dissname}}</p>
+                                <h2 class="name" v-html="item.creator.name"></h2>
+                                <p class="desc" v-html="item.dissname"></p>
                             </div>
                         </li>
                     </ul>
@@ -58,8 +58,16 @@
             },
             _getDiscList() {
                 getDiscList().then((res) => {
-                    this.discList = res.data.list
+                    if (res.code === ERR_OK) {
+                        this.discList = res.data.list
+                    }
                 })
+            },
+            loadImage() {
+                if (!this.checkloaded) {
+                    this.checkloaded = true
+                    this.$refs.scroll.refresh()
+                }
             },
             selectItem(item) {
                 this.$router.push({
@@ -95,10 +103,14 @@
                 .recommend-item
                     padding 0 20px 20px
                     display flex
+                    align-items center
+                    justify-content center
                     box-sizing border-box
                     .icon
                         padding-right 20px
                         width 60px
+                        dissid flex
+                        flex-direction column
                         flex 0 0 60px
                     .text
                         flex 1

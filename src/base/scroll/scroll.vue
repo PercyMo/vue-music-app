@@ -9,6 +9,14 @@
     
     export default {
         props: {
+            probeType: {
+                type: Number,
+                default: 1
+            },
+            click: {
+                type: Boolean,
+                default: true
+            },
             data: {
                 type: Array,
                 default: null
@@ -29,8 +37,15 @@
                     return
                 }
                 this.scroll = new BScroll(this.$refs.wrapper, {
-                    click: true
+                    click: this.click,
+                    probeType: this.probeType
                 })
+            },
+            disable() {
+                this.scroll && this.scroll.disable()
+            },
+            enable() {
+                this.scroll && this.scroll.enable()
             },
             refresh() {
                 this.scroll && this.scroll.refresh()
