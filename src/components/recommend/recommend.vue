@@ -27,12 +27,16 @@
                 </div>
                 <router-view></router-view>
             </div>
+            <div class="loading-container" v-if="!discList.length">
+                <loading></loading>
+            </div>
         </scroll>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import Slider from 'base/slider/slider'
+    import Loading from 'base/loading/loading'
     import Scroll from 'base/scroll/scroll'
     import {getRecommend, getDiscList} from 'api/recommend'
     import {ERR_OK} from 'api/config'
@@ -77,6 +81,7 @@
         },
         components: {
             Slider,
+            Loading,
             Scroll
         }
     }
@@ -121,4 +126,9 @@
                             color $color-text
                         .desc
                             color $color-text-d
+            .loading-container
+                width 100%
+                position absolute
+                top 50%
+                transform translateY(-50%)
 </style>
