@@ -157,20 +157,20 @@
             position absolute
             right 0
             left 0
-            bottom 12px
+            bottom 8px
             font-size 0
             text-align center
             .dot
-                margin 0 4px
-                width 8px
-                height 8px
+                margin 0 3px
+                width 6px
+                height 6px
                 display inline-block
                 border-radius 50%
                 background $color-text-l
                 transition all .3s
                 -webkit-transform transition3d(0, 0, 0)
                 &.active
-                    width 20px
+                    width 15px
                     border-radius 5px
                     background $color-text-ll
 </style>

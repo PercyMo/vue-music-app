@@ -1,7 +1,7 @@
 <template>
     <div class="m-header">
         <div class="m-header-icon"></div>
-        <h1 class="m-header-title">Chicken Music</h1>
+        <h1 class="m-header-title">Music 音乐台-听我所爱</h1>
     </div>
 </template>
 
@@ -17,20 +17,19 @@
     .m-header
         height 44px
         position relative
-        color $color-theme
+        color $color-text-w
         text-align center
         font-size 0
+        background-color $color-theme
     .m-header-icon
-        margin 6px 9px 0 0
-        width 30px
+        margin-top: 6px
+        width 88px
         height 32px
         display inline-block
         vertical-align top
         bg-image('logo')
-        background-size 30px 32px
+        background-size 88px 32px
     .m-header-title
         display inline-block
-        font-size $font-size-large
-        line-height 44px
-        vertical-align top
+        font-size 0
 </style>
