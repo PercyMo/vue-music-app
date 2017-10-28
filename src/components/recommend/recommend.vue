@@ -120,12 +120,13 @@
                     .text
                         flex 1
                         line-height 20px
-                        font-size: $font-size-medium
                         .name
-                            margin-bottom: 10px
+                            margin-bottom: 6px
                             color $color-text
+                            font-size: $font-size-medium
                         .desc
                             color $color-text-d
+                            font-size $font-size-small
             .loading-container
                 width 100%
                 position absolute

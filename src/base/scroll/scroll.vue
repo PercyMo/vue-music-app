@@ -38,7 +38,8 @@
                 }
                 this.scroll = new BScroll(this.$refs.wrapper, {
                     click: this.click,
-                    probeType: this.probeType
+                    probeType: this.probeType,
+                    bounce: false
                 })
             },
             disable() {

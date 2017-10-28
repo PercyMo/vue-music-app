@@ -166,11 +166,8 @@
                 height 6px
                 display inline-block
                 border-radius 50%
-                background $color-text-l
-                transition all .3s
-                -webkit-transform transition3d(0, 0, 0)
+                background $color-text-d
                 &.active
-                    width 15px
-                    border-radius 5px
-                    background $color-text-ll
+                    background $color-theme
+                    opacity .8
 </style>

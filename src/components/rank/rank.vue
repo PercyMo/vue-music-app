@@ -2,8 +2,8 @@
     <div class="rank" ref="rank">
         <scroll class="toplist" ref="toplist" :data="topList">
             <ul>
-                <li @click="selectItem(item)" class="rank-item" v-for="item in topList">
-                    <div class="icon" :key="item.id">
+                <li @click="selectItem(item)" class="rank-item" v-for="item in topList" :key="item.id">
+                    <div class="icon">
                         <img width="100" height="100" v-lazy="item.picObj">
                     </div>
                     <ul class="songlist">
@@ -72,7 +72,7 @@
     .rank
         width 100%
         position fixed
-        top 88px
+        top 81px
         bottom 0
         .toplist
             height 100%
@@ -82,6 +82,8 @@
                 padding-top 20px
                 height 100px
                 display flex
+                &:first-child
+                    padding-top 10px
                 &:last-child
                     padding-bottom 20px
                 .icon
@@ -95,10 +97,10 @@
                     display flex
                     flex-direction column
                     justify-content center
-                    color: $color-text-d
+                    color: $color-text
                     font-size $font-size-small
                     overflow hidden
-                    background $color-highlight-background
+                    background $color-background-s
                     .song
                         no-wrap()
                         line-height 26px
