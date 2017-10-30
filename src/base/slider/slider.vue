@@ -55,6 +55,11 @@
                 this.slider.refresh()
             })
         },
+        activated() {
+            if (this.autoplay) {
+                this._play()
+            }
+        },
         destroyed() {
             clearTimeout(this.timer)
         },
