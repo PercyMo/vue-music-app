@@ -17,6 +17,10 @@
                 type: Boolean,
                 default: true
             },
+            listenScroll: {
+                type: Boolean,
+                default: false
+            },
             data: {
                 type: Array,
                 default: null
@@ -42,10 +46,12 @@
                     bounce: false
                 })
 
-                this.scroll.on('scroll', () => {
-                    console.log(this.scroll)
-                    console.log('滚动检测')
-                })
+                if (this.listenScroll) {
+                    let _this = this
+                    this.scroll.on('scroll', (pos) => {
+                        _this.$emit('scroll', pos)
+                    })
+                }
             },
             disable() {
                 this.scroll && this.scroll.disable()

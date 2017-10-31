@@ -1,5 +1,10 @@
 <template>
-    <scroll ref="scroll" class="listview" :data="data">
+    <scroll ref="scroll"
+            class="listview"
+            @scroll="scroll"
+            :data="data"
+            :probeType="probeType"
+            :listenScroll="listenScroll">
         <ul>
             <li v-for="group in data" class="list-group" :key="group.title">
                 <h2 class="list-group-title">{{group.title}}</h2>
@@ -30,11 +35,18 @@
         },
         data() {
             return {
+                scrollY: 0,
+                listHeight: []
             }
         },
         created() {
+            this.probeType = 3
+            this.listenScroll = true
         },
         methods: {
+            scroll(pos) {
+                this.scrollY = Math.abs(Math.round(pos.y))
+            }
         },
         components: {
             Scroll,
