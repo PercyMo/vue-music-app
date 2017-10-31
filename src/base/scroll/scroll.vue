@@ -41,6 +41,11 @@
                     probeType: this.probeType,
                     bounce: false
                 })
+
+                this.scroll.on('scroll', () => {
+                    console.log(this.scroll)
+                    console.log('滚动检测')
+                })
             },
             disable() {
                 this.scroll && this.scroll.disable()
