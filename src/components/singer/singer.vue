@@ -20,7 +20,9 @@
             }
         },
         created() {
-            this._getSingerList()
+            setTimeout(() => {
+                this._getSingerList()
+            }, 1000)
         },
         methods: {
             _getSingerList() {

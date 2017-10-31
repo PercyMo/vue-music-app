@@ -1,8 +1,15 @@
 @import "variable.styl"
 
 body, html
-  line-height 1
-  font-family 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
-  user-select none
-  -webkit-tap-highkight-color transparent
-  background $color-background
+    line-height 1
+    font-family 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
+    user-select none
+    -webkit-tap-highkight-color transparent
+    background $color-background
+  
+//loading居中样式
+.loading-container
+    width 100%
+    position absolute
+    top 50%
+    transform translateY(-50%)
