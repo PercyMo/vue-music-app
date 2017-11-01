@@ -61,6 +61,9 @@
             },
             refresh() {
                 this.scroll && this.scroll.refresh()
+            },
+            scrollToElement(el, time) {
+                this.scroll && this.scroll.scrollToElement(el, time)
             }
         },
         watch: {
