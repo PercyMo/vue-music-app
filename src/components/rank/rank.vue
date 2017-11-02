@@ -26,6 +26,7 @@
 
 <script type="text/ecmascript-6">
     import Scroll from 'base/scroll/scroll'
+    import Loading from 'base/loading/loading'
     import {getTopList} from 'api/rank'
     import {ERR_OK} from 'api/config'
     import ImgDefault from 'common/image/album.png'
@@ -60,7 +61,8 @@
             }
         },
         components: {
-            Scroll
+            Scroll,
+            Loading
         }
     }
 </script>
@@ -104,9 +106,4 @@
                     .song
                         no-wrap()
                         line-height 26px
-        .loading-container
-            position: absolute
-            width: 100%
-            top: 50%
-            transform: translateY(-50%)
 </style>

@@ -100,6 +100,7 @@
             },
             scroll(pos) {
                 this.scrollY = Math.abs(Math.round(pos.y))
+                console.log(this.scrollY)
             },
             onShortcutTouchStart(e) {
                 console.log(e)
@@ -109,13 +110,12 @@
                 
             },
             onShortcutTouchMove(e) {
-                // console.log(e.touches[0].pageY)
+                console.log(e.touches[0].pageY)
             },
             _scrollTo(index) {
-                console.log(index)
-                console.log(this.$refs.listview)
-                // this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 500)
                 this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
+                let y = this.$refs.listview.scroll.y
+                this.scrollY = -y
             }
         },
         components: {
