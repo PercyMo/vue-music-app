@@ -60,6 +60,10 @@
                 this._play()
             }
         },
+
+        deactivated() {
+            clearTimeout(this.timer)
+        },
         destroyed() {
             clearTimeout(this.timer)
         },

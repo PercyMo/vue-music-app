@@ -24,10 +24,11 @@
 <style lang="stylus" rel="stylesheet/stylus">
     @import "~common/stylus/variable"
     .g-tab
-        height 44px
+        height 37px
         display flex
         line-height 44px
         font-size $font-size-medium
+        background $color-background-w
     .g-tab-item
         flex 1
         text-align center

@@ -41,6 +41,8 @@
     import Loading from 'base/loading/loading'
     import {getData} from 'common/js/dom'
 
+    const ANCHOR_HEIGHT = 18
+
     export default {
         props: {
             data: {
@@ -68,6 +70,7 @@
         created() {
             this.probeType = 3
             this.listenScroll = true
+            this.touch = {}
         },
         watch: {
             data() {
@@ -100,19 +103,31 @@
             },
             scroll(pos) {
                 this.scrollY = Math.abs(Math.round(pos.y))
-                console.log(this.scrollY)
+                // console.log(this.scrollY)
             },
             onShortcutTouchStart(e) {
-                console.log(e)
                 let anchorIndex = getData(e.target, 'index')
+                let firstTouch = e.touches[0]
+                this.touch.y1 = firstTouch.pageY
+                this.touch.anchorIndex = anchorIndex
 
                 this._scrollTo(anchorIndex)
                 
             },
             onShortcutTouchMove(e) {
-                console.log(e.touches[0].pageY)
+                let firstTouch = e.touches[0]
+                this.touch.y2 = firstTouch.pageY
+                let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
+                let anchorIndex = parseInt(this.touch.anchorIndex) + delta
+
+                this._scrollTo(anchorIndex)
             },
             _scrollTo(index) {
+                if (index < 0) {
+                    index = 0
+                } else if (index > this.listHeight.length - 2) {
+                    index = this.listHeight.length - 2
+                }
                 this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
                 let y = this.$refs.listview.scroll.y
                 this.scrollY = -y
