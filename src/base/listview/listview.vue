@@ -16,16 +16,19 @@
                 </ul>
             </li>
         </ul>
-        <div class="list-shortcut" v-if="shortcutlist.length" @touchstart.stop.prevent="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
+        <div class="list-shortcut" v-if="shortcutlist.length" @touchstart.stop.prevent="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove" @touchend.stop.prevent="onShortcutTouchEnd">
             <ul>
                 <li v-for="(item, index) in shortcutlist"
                     :key="index"
                     :data-index="index"
                     class="shortcut-item"
                     :class="{'current': index === currentIndex}">
-                    {{item}}
+                    <span :data-index="index">{{item}}</span>
                 </li>
             </ul>
+        </div>
+        <div class="shortcut-card" v-show="cardShow">
+            {{shortcutlist[currentIndex]}}
         </div>
         <div class="list-fixed" v-if="shortcutlist.length">
             <div class="fixed-title">{{fixedTitle}}</div>
@@ -63,14 +66,15 @@
         data() {
             return {
                 scrollY: 0,
-                listHeight: [],
-                currentIndex: 0
+                currentIndex: 0,
+                cardShow: false
             }
         },
         created() {
             this.probeType = 3
             this.listenScroll = true
             this.touch = {}
+            this.listHeight = []
         },
         watch: {
             data() {
@@ -85,11 +89,38 @@
                     let height2 = listHeight[i + 1]
                     if (newY >= height1 && newY < height2) {
                         this.currentIndex = i
+                        break
                     }
                 }
+                console.log(newY)
             }
         },
         methods: {
+            scroll(pos) {
+                this.scrollY = Math.abs(Math.round(pos.y))
+            },
+            onShortcutTouchStart(e) {
+                let anchorIndex = getData(e.target, 'index')
+                let firstTouch = e.touches[0]
+                this.touch.y1 = firstTouch.pageY
+                this.touch.anchorIndex = anchorIndex
+                this.cardShow = true
+
+                this._scrollTo(anchorIndex)
+            },
+            onShortcutTouchMove(e) {
+                let firstTouch = e.touches[0]
+                this.touch.y2 = firstTouch.pageY
+                let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
+                let anchorIndex = parseInt(this.touch.anchorIndex) + delta
+
+                this._scrollTo(anchorIndex)
+            },
+            onShortcutTouchEnd() {
+                setTimeout(() => {
+                    this.cardShow = false
+                }, 200)
+            },
             _calculateHeight() {
                 this.listHeight = []
                 const list = this.$refs.listGroup
@@ -101,36 +132,17 @@
                     this.listHeight.push(height)
                 }
             },
-            scroll(pos) {
-                this.scrollY = Math.abs(Math.round(pos.y))
-                // console.log(this.scrollY)
-            },
-            onShortcutTouchStart(e) {
-                let anchorIndex = getData(e.target, 'index')
-                let firstTouch = e.touches[0]
-                this.touch.y1 = firstTouch.pageY
-                this.touch.anchorIndex = anchorIndex
-
-                this._scrollTo(anchorIndex)
-                
-            },
-            onShortcutTouchMove(e) {
-                let firstTouch = e.touches[0]
-                this.touch.y2 = firstTouch.pageY
-                let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
-                let anchorIndex = parseInt(this.touch.anchorIndex) + delta
-
-                this._scrollTo(anchorIndex)
-            },
             _scrollTo(index) {
+                if (!index && index !== 0) {
+                    return
+                }
                 if (index < 0) {
                     index = 0
                 } else if (index > this.listHeight.length - 2) {
                     index = this.listHeight.length - 2
                 }
+                this.scrollY = this.listHeight[index]
                 this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
-                let y = this.$refs.listview.scroll.y
-                this.scrollY = -y
             }
         },
         components: {
@@ -187,9 +199,25 @@
                 color $color-text-w
                 font-size $font-size-small
                 line-height 1
-                transform scale(.8)
                 &.current
                     color $color-text
+                span
+                    display block
+                    transform scale(.8)
+        .shortcut-card
+            width 50px
+            height 60px
+            position absolute
+            top 40%
+            left 50%
+            color $color-text-w
+            font-size 32px
+            line-height 60px
+            text-align center
+            border-radius $border-radius
+            background $color-background-m
+            transform translateX(-50%)
+            box-shadow 0 0 5px #666
         .list-fixed
             width 100%
             position absolute
