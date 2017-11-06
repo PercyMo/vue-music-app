@@ -9,7 +9,7 @@
             <li v-for="group in data" class="list-group" :key="group.title" ref="listGroup">
                 <h2 class="list-group-title">{{group.title}}</h2>
                 <ul>
-                    <li v-for="item in group.items" class="list-group-item" :key="item.id">
+                    <li @click="selectItem(item)" v-for="item in group.items" class="list-group-item" :key="item.id">
                         <img class="avatar" v-lazy="item.avatar">
                         <span class="name">{{item.name}}</span>
                     </li>
@@ -30,7 +30,7 @@
         <div class="shortcut-card" v-show="cardShow">
             {{shortcutlist[currentIndex]}}
         </div>
-        <div class="list-fixed" v-if="shortcutlist.length">
+        <div class="list-fixed" ref="fixed" v-if="fixedTitle">
             <div class="fixed-title">{{fixedTitle}}</div>
         </div>
         <div v-if="!data.length" class="loading-container">
@@ -45,6 +45,7 @@
     import {getData} from 'common/js/dom'
 
     const ANCHOR_HEIGHT = 18
+    const TITLE_HEIGHT = 26
 
     export default {
         props: {
@@ -67,7 +68,8 @@
             return {
                 scrollY: 0,
                 currentIndex: 0,
-                cardShow: false
+                cardShow: false,
+                diff: 0
             }
         },
         created() {
@@ -89,10 +91,18 @@
                     let height2 = listHeight[i + 1]
                     if (newY >= height1 && newY < height2) {
                         this.currentIndex = i
+                        this.diff = height2 - newY
                         break
                     }
                 }
-                console.log(newY)
+            },
+            diff(newVal) {
+                let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+                if (this.fixedTop === fixedTop) {
+                    return
+                }
+                this.fixedTop = fixedTop
+                this.$refs.fixed.style.transform = `translate3d(0, ${fixedTop}px, 0)`
             }
         },
         methods: {
@@ -120,6 +130,9 @@
                 setTimeout(() => {
                     this.cardShow = false
                 }, 200)
+            },
+            selectItem(item) {
+                this.$emit('select', item)
             },
             _calculateHeight() {
                 this.listHeight = []
