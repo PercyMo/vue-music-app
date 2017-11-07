@@ -1,7 +1,9 @@
 <template>
-    <div class="singer-detail">
-        歌手详情页面
-    </div>
+    <transition name="slide">
+        <div class="singer-detail">
+            歌手详情页面
+        </div>
+    </transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -12,12 +14,10 @@
             }
         },
         created() {
-            // console.log(this.$router)
+            console.log(this.$route)
         },
-        watch: {
-            $route() {
-                console.log(this.$router)
-            }
+        mounted() {
+            // console.log(this.$route)
         },
         methods: {
             
@@ -28,4 +28,14 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+    @import "~common/stylus/variable"
+    
+    .singer-detail
+        width 100%
+        position fixed
+        top 0
+        left 0
+        bottom 0
+        background $color-background
+        z-index 100
 </style>
