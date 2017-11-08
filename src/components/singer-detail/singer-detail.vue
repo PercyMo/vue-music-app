@@ -7,17 +7,21 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import {mapGetters} from 'vuex'
 
     export default {
         data() {
             return {
+                mao: {}
             }
         },
-        created() {
-            console.log(this.$route)
+        computed: {
+            ...mapGetters([
+                'singer'
+            ])
         },
-        mounted() {
-            // console.log(this.$route)
+        created() {
+            console.log(this.singer)
         },
         methods: {
             
