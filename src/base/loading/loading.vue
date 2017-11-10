@@ -8,8 +8,10 @@
 <script type="text/ecmascript-6">
     export default {
         props: {
-            title: String,
-            default: '正在载入...'
+            title: {
+                type: String,
+                default: '努力加载中...'
+            }
         }
     }
 </script>
@@ -21,7 +23,11 @@
         width 100%
         text-align center
         .desc
+            margin-left 5px
+            height 24px
+            display inline-block
             color $color-text-l
             font-size $font-size-small
-            line-height 20px
+            line-height 24px
+            vertical-align top
 </style>

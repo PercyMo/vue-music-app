@@ -1,6 +1,10 @@
 <template>
     <div class="music-list">
-        撒发发 
+        <div class="back" @click="back">
+            <i class="icon-playlist"></i>
+            <!-- <img width="100%" :src="bgImage"> -->
+        </div>
+        <h1 class="title">{{title}}</h1>
     </div>
 </template>
 
@@ -10,6 +14,14 @@
             songs: {
                 type: Array,
                 default: []
+            },
+            title: {
+                type: String,
+                default: ''
+            },
+            bgImage: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -19,7 +31,9 @@
         created() {
         },
         methods: {
-            
+            back() {
+                this.$router.back()
+            }
         },
         components: {
         }
@@ -37,4 +51,8 @@
         bottom 0
         background $color-background
         z-index 100
+        i
+            margin 10px
+            display block
+            font-size 24px
 </style>
