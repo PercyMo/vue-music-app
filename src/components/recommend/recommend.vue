@@ -114,16 +114,18 @@
                     .icon
                         padding-right 20px
                         width 60px
-                        dissid flex
+                        display flex
                         flex-direction column
                         flex 0 0 60px
+                        img
+                            background #fff
                     .text
                         flex 1
                         line-height 20px
                         .name
                             margin-bottom: 6px
                             color $color-text
-                            font-size: $font-size-medium
+                            font-size $font-size-medium
                         .desc
                             color $color-text-d
                             font-size $font-size-small

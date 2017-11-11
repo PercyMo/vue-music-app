@@ -1,5 +1,5 @@
 <template>
-    <div class="rank" ref="rank">
+    <div class="rank-page" ref="rank">
         <scroll class="toplist" ref="toplist" :data="topList">
             <ul>
                 <li @click="selectItem(item)" class="rank-item" v-for="item in topList" :key="item.id">
@@ -71,7 +71,7 @@
     @import "~common/stylus/variable"
     @import "~common/stylus/mixin"
     
-    .rank
+    .rank-page
         width 100%
         position fixed
         top 81px

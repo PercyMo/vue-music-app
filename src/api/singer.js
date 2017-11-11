@@ -29,7 +29,7 @@ export function getSingerDetail(singerId) {
         singermid: singerId,
         order: 'listen',
         begin: 0,
-        num: 80,
+        num: 50,
         songstatus: 1
     })
 

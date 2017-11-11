@@ -61,9 +61,10 @@
     }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
-    &.slide-enter-active, &.slide-leave-active
+<style lang="stylus" rel="stylesheet/stylus">
+    .slide-enter-active, .slide-leave-active
         transition all .3s
-    &.slide-enter, &.slide-leave-to
+        
+    .slide-enter, .slide-leave-to
         transform translate3d(100%, 0, 0)
 </style>
