@@ -11,6 +11,23 @@
                 </div>
             </li>
         </ul>
+        <div class="test-icon">
+            <i class="icon-close"></i>
+            <i class="icon-random"></i>
+            <i class="icon-voice"></i>
+            <i class="icon-play"></i>
+            <i class="icon-add"></i>
+            <i class="icon-back"></i>
+            <i class="icon-stop"></i>
+            <i class="icon-like_out"></i>
+            <i class="icon-loop_single"></i>
+            <i class="icon-loop_all"></i>
+            <i class="icon-empty"></i>
+            <i class="icon-like_on"></i>
+            <i class="icon-playlist"></i>
+            <i class="icon-prev_song"></i>
+            <i class="icon-next_song"></i>
+        </div>
     </div>
 </template>
 
@@ -71,4 +88,20 @@
                     no-wrap()
                     color $color-text-d
                     font-size $font-size-small
+                    
+        .test-icon
+            box-sizing border-box
+            padding 20px
+            z-index 100
+            width 100%
+            position fixed
+            top 0
+            left 0
+            background rgba(0, 0, 0, .7)
+            font-size 0
+            i
+                padding 5px
+                display inline-block
+                color #fff
+                font-size 24px
 </style>
