@@ -71,4 +71,8 @@
                     no-wrap()
                     color $color-text-d
                     font-size $font-size-small
+            &:last-child
+                .content
+                    &:after
+                        display none
 </style>

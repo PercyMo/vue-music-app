@@ -4,7 +4,9 @@
             <i class="icon-back"></i>
         </div>
         <h1 class="title" v-html="title"></h1>
-        <div class="bg-image" :style="bgStyle" ref="bgImage"></div>
+        <div class="bg-image" :style="bgStyle" ref="bgImage">
+            <div class="filter" ref="filter"></div>
+        </div>
         <scroll
             ref="list"
             class="list"
@@ -21,6 +23,8 @@
 <script type="text/ecmascript-6">
     import Scroll from 'base/scroll/scroll'
     import SongList from 'base/song-list/song-list'
+
+    const RESERVED_HEIGHT = 50
 
     export default {
         props: {
@@ -53,6 +57,7 @@
         },
         mounted() {
             this.imageHeight = this.$refs.bgImage.clientHeight
+            this.minTransLateY = -this.imageHeight + RESERVED_HEIGHT
             this.$refs.list.$el.style.top = `${this.imageHeight}px`
         },
         methods: {
@@ -65,22 +70,27 @@
         },
         watch: {
             scrollY(newVal) {
+                console.log(newVal)
                 let scale = 1
                 let zIndex = 0
                 const percent = Math.abs(newVal / this.imageHeight)
                 if (newVal > 0) {
-                    console.log('超出高度，需要放大')
                     scale = 1 + percent
                     zIndex = 10
-                    console.log(scale)
                 } else {
                     console.log('正常范围内滚动')
                 }
-                // this.$refs.bgImage.style['padding-top'] = `scale(${scale})`
-                // let x = this.$refs.bgImage.style['padding-top']
-                // console.log(x)
-                this.$refs.bgImage.style.paddingTop = '60%'
+
+                if (newVal < this.minTransLateY) {
+                    zIndex = 10
+                    this.$refs.bgImage.style.paddingTop = 0
+                    this.$refs.bgImage.style.height = `${RESERVED_HEIGHT}px`
+                } else {
+                    this.$refs.bgImage.style.paddingTop = '60%'
+                    this.$refs.bgImage.style.height = 0
+                }
                 this.$refs.bgImage.style['transform'] = `scale(${scale})`
+                this.$refs.bgImage.style['webkitTransform'] = `scale(${scale})`
                 this.$refs.bgImage.style.zIndex = zIndex
             }
         },
@@ -134,8 +144,15 @@
             padding-top 60%
             width 100%
             height 0
+            transform-origin top
             background-size cover
-            background-position center center
+            .filter
+                position absolute
+                top 0
+                left 0
+                width 100%
+                height 100%
+                background rgba(0, 0, 0, .65)
         .list
             width 100%
             position fixed
