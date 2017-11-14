@@ -5,7 +5,8 @@
         </div>
         <h1 class="title" v-html="title"></h1>
         <div class="bg-image" :style="bgStyle" ref="bgImage">
-            <div class="filter" ref="filter"></div>
+            <div class="filter"></div>
+            <div class="tit-mask" ref="mask"></div>
         </div>
         <scroll
             ref="list"
@@ -16,12 +17,16 @@
             :listenScroll="listenScroll"
             :bounce="true">
             <song-list :songs="songs"></song-list>
+            <div class="loading-container" v-if="!songs.length">
+                <loading></loading>
+            </div>
         </scroll>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import Scroll from 'base/scroll/scroll'
+    import Loading from 'base/loading/loading'
     import SongList from 'base/song-list/song-list'
 
     const RESERVED_HEIGHT = 50
@@ -70,15 +75,17 @@
         },
         watch: {
             scrollY(newVal) {
-                console.log(newVal)
                 let scale = 1
                 let zIndex = 0
                 const percent = Math.abs(newVal / this.imageHeight)
-                if (newVal > 0) {
+                const maxHeight = this.imageHeight - RESERVED_HEIGHT
+                if (newVal >= 0) {
                     scale = 1 + percent
                     zIndex = 10
-                } else {
-                    console.log('正常范围内滚动')
+                    this.$refs.mask.style.background = 'rgba(0, 0, 0, 0)'
+                } else if (newVal < 0 && newVal > -maxHeight) {
+                    const opacity = percent * 0.65
+                    this.$refs.mask.style.background = `rgba(0, 0, 0, ${opacity})`
                 }
 
                 if (newVal < this.minTransLateY) {
@@ -96,6 +103,7 @@
         },
         components: {
             Scroll,
+            Loading,
             SongList
         }
     }
@@ -152,7 +160,13 @@
                 left 0
                 width 100%
                 height 100%
-                background rgba(0, 0, 0, .65)
+                background rgba(0, 0, 0, .15)
+            .tit-mask
+                position absolute
+                top 0
+                left 0
+                width 100%
+                height 50px
         .list
             width 100%
             position fixed
