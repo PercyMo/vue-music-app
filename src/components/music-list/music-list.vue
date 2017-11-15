@@ -16,7 +16,7 @@
             :probeType="probeType"
             :listenScroll="listenScroll"
             :bounce="true">
-            <song-list :songs="songs"></song-list>
+            <song-list :songs="songs" @select="selectSong"></song-list>
             <div class="loading-container" v-if="!songs.length">
                 <loading></loading>
             </div>
@@ -72,6 +72,9 @@
             scroll(pos) {
                 this.scrollY = pos.y
             },
+            selectSong(song, index) {
+                console.log(song, index)
+            }
         },
         watch: {
             scrollY(newVal) {
