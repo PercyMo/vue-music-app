@@ -218,18 +218,14 @@
                     .icon
                         flex 1
                         color $color-theme-w
+                        text-align center
                         i
                             font-size 26px
                         .icon-prev_song, .icon-next_song
-                            font-size 27px
-                    .i-left
-                        text-align right
-                    .i-center
-                        text-align center
-                        i
                             font-size 30px
-                    .i-right
-                        text-align left
+                    .i-center
+                        i
+                            font-size 45px
         .mini-player
             width 100%
             height 50px
