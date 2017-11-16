@@ -28,6 +28,7 @@
     import Scroll from 'base/scroll/scroll'
     import Loading from 'base/loading/loading'
     import SongList from 'base/song-list/song-list'
+    import {mapActions} from 'vuex'
 
     const RESERVED_HEIGHT = 50
 
@@ -73,8 +74,14 @@
                 this.scrollY = pos.y
             },
             selectSong(song, index) {
-                console.log(song, index)
-            }
+                this.selectPlay({
+                    list: this.songs,
+                    index
+                })
+            },
+            ...mapActions([
+                'selectPlay'
+            ])
         },
         watch: {
             scrollY(newVal) {
@@ -127,7 +134,7 @@
         .back
             position absolute
             top 0
-            left 6px
+            left 0
             z-index 50
             i
                 padding 0 10px
@@ -137,7 +144,7 @@
                 font-size $font-size-large-x
                 line-height 50px
         .title
-            padding 0 60px
+            padding 0 50px
             height 50px
             position absolute
             top 0
