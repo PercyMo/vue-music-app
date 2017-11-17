@@ -222,9 +222,11 @@
                         i
                             font-size 26px
                         .icon-prev_song, .icon-next_song
+                            color rgba(255, 255, 255, 0.8)
                             font-size 30px
                     .i-center
                         i
+                            color rgba(255, 255, 255, 0.8)
                             font-size 45px
         .mini-player
             width 100%
