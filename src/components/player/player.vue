@@ -1,73 +1,77 @@
 <template>
     <div class="m-player" v-show="playlist.length">
-        <div class="normal-player" v-show="fullScreen">
-            <div class="background">
-                <img :src="currentSong.image" width="100%" height="100%">
-            </div>
-            <div class="top">
-                <div class="back" @click="back">
-                    <i class="icon-back"></i>
+        <transition name="normal">
+            <div class="normal-player" v-show="fullScreen">
+                <div class="background">
+                    <img :src="currentSong.image" width="100%" height="100%">
                 </div>
-                <h1 class="title" v-html="currentSong.name"></h1>
-                <h2 class="subtitle" v-html="currentSong.singer"></h2>
-            </div>
-            <div class="middle">
-                <div class="middle-l">
-                    <div class="cd-wrapper">
-                        <div class="cd">
-                            <img class="image" :src="currentSong.image">
+                <div class="top">
+                    <div class="back" @click="back">
+                        <i class="icon-back"></i>
+                    </div>
+                    <h1 class="title" v-html="currentSong.name"></h1>
+                    <h2 class="subtitle" v-html="currentSong.singer"></h2>
+                </div>
+                <div class="middle">
+                    <div class="middle-l">
+                        <div class="cd-wrapper">
+                            <div class="cd">
+                                <img class="image" :src="currentSong.image">
+                            </div>
+                        </div>
+                        <div class="playing-lyric-wrapper">
+                            <div class="playing-lyric">
+                                此处缺省歌词
+                            </div>
                         </div>
                     </div>
-                    <div class="playing-lyric-wrapper">
-                        <div class="playing-lyric">
-                            此处缺省歌词
-                        </div>
+                </div>
+                <div class="bottom">
+                    <div class="dot-wrapper">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
                     </div>
-                </div>
-            </div>
-            <div class="bottom">
-                <div class="dot-wrapper">
-                    <span class="dot">点</span>
-                    <span class="dot">点</span>
-                </div>
-                <div class="progress-wrapper">
-                    <span class="time time-l">当前时间</span>
                     <div class="progress-wrapper">
-                        进度条
+                        <span class="time time-l">当前时间</span>
+                        <div class="progress-wrapper">
+                            进度条
+                        </div>
+                        <span class="time time-r">总时长</span>
                     </div>
-                    <span class="time time-r">总时长</span>
+                    <div class="operators">
+                        <div class="icon i-left">
+                            <i class="icon-loop_single"></i>
+                        </div>
+                        <div class="icon i-left">
+                            <i class="icon-prev_song"></i>
+                        </div>
+                        <div class="icon i-center">
+                            <i class="icon-play"></i>
+                        </div>
+                        <div class="icon i-right">
+                            <i class="icon-next_song"></i>
+                        </div>
+                        <div class="icon i-right">
+                            <i class="icon-like_out"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="operators">
-                    <div class="icon i-left">
-                        <i class="icon-loop_single"></i>
-                    </div>
-                    <div class="icon i-left">
-                        <i class="icon-prev_song"></i>
-                    </div>
-                    <div class="icon i-center">
-                        <i class="icon-play"></i>
-                    </div>
-                    <div class="icon i-right">
-                        <i class="icon-next_song"></i>
-                    </div>
-                    <div class="icon i-right">
-                        <i class="icon-like_out"></i>
-                    </div>
+            </div>
+        </transition>
+        <transition name="mini">
+            <div class="mini-player" v-show="!fullScreen" @click="open">
+                <div class="icon">
+                    <img :src="currentSong.image" width="40" height="40">
+                </div>
+                <div class="text">
+                    <h2 class="name" v-html="currentSong.name"></h2>
+                    <p class="desc" v-html="currentSong.singer"></p>
+                </div>
+                <div class="control">
+                    <i class="icon-play"></i>
                 </div>
             </div>
-        </div>
-        <div class="mini-player" v-show="!fullScreen" @click="open">
-            <div class="icon">
-                <img :src="currentSong.image" width="40" height="40">
-            </div>
-            <div class="text">
-                <h2 class="name" v-html="currentSong.name"></h2>
-                <p class="desc" v-html="currentSong.singer"></p>
-            </div>
-            <div class="control">
-                <i class="icon-play"></i>
-            </div>
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -228,6 +232,16 @@
                         i
                             color rgba(255, 255, 255, 0.8)
                             font-size 45px
+            &.normal-enter-active, &.normal-leave-active
+                transition: all .4s
+                .top, .bottom
+                    transition all .4s cubic-bezier(0.86, 0.18, 0.82, 1.32)
+            &.normal-enter, &.normal-leave-to
+                opacity 0
+                .top
+                    transform translate3d(0, -100px, 0)
+                .bottom
+                    transform translate3d(0, 100px , 0)
         .mini-player
             width 100%
             height 50px
@@ -260,4 +274,8 @@
             .control
                 width 30px
                 flex 0 0 30px
+            &.mini-enter-active, &.mini-leave-active
+                transition: all .4s
+            &.mini-enter, &.mini-leave-to
+                opacity 0
 </style>
