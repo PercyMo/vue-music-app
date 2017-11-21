@@ -1,6 +1,9 @@
 <template>
     <div class="m-player" v-show="playlist.length">
-        <transition name="normal">
+        <transition name="normal"
+                    @before-enter="beforeEnter"
+                    @enter="enter"
+                    @leave="leave">
             <div class="normal-player" v-show="fullScreen">
                 <div class="background">
                     <img :src="currentSong.image" width="100%" height="100%">
@@ -12,9 +15,34 @@
                     <h1 class="title" v-html="currentSong.name"></h1>
                     <h2 class="subtitle" v-html="currentSong.singer"></h2>
                 </div>
+
+
+
+
+               <!--  <div id="example-4">
+                  <button @click="show = !show">
+                    Toggle
+                  </button>
+                  <transition
+                    v-on:before-enter="beforeEnter"
+                    v-on:enter="enter"
+                    v-on:leave="leave"
+                    v-bind:css="false"
+                  >
+                    <div v-if="show">
+                        正常文本
+                      <div ref="test">Demo</div>
+                    </div>
+                  </transition>
+                </div> -->
+
+
+
+
+
                 <div class="middle">
                     <div class="middle-l">
-                        <div class="cd-wrapper">
+                        <div class="cd-wrapper" ref="cdWrapper">
                             <div class="cd">
                                 <img class="image" :src="currentSong.image">
                             </div>
@@ -77,10 +105,12 @@
 
 <script type="text/ecmascript-6">
     import {mapGetters, mapMutations} from 'vuex'
+    import Velocity from 'velocity-animate'
 
     export default {
         data() {
             return {
+                show: false
             }
         },
         computed: {
@@ -99,6 +129,47 @@
             },
             open() {
                 this.setFullScreen(true)
+            },
+
+
+
+
+
+            // beforeEnter: function (el) {
+            //     console.log('测试：beforeEnter')
+            //   this.$refs.test.style.opacity = 0
+            //   this.$refs.test.style.transformOrigin = 'left'
+            // },
+            // enter: function (el, done) {
+            //     console.log('enter')
+            //   Velocity(this.$refs.test, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+            //   Velocity(this.$refs.test, { fontSize: '1em' }, { complete: done })
+            // },
+            // leave: function (el, done) {
+            //   console.log('leave')
+            //   Velocity(this.$refs.test, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
+            //   Velocity(this.$refs.test, { rotateZ: '100deg' }, { loop: 2 })
+            //   Velocity(this.$refs.test, {
+            //     rotateZ: '45deg',
+            //     translateY: '30px',
+            //     translateX: '30px',
+            //     opacity: 0
+            //   }, { complete: done })
+            // },
+
+
+
+
+            beforeEnter(el) {
+                this.$refs.cdWrapper.style.opacity = 0
+                // this.$refs.cdWrapper.style.transformOrigin = 'left'
+                this.$refs.cdWrapper.style['translateX'] = '30px'
+            },
+            enter(el, done) {
+                Velocity(this.$refs.cdWrapper, { opacity: 1, translateX: '0px' }, { duration: 400 }, { complete: done })
+            },
+            leave(el, done) {
+                Velocity(this.$refs.cdWrapper, { opacity: 0, translateX: '30px' }, { duration: 400 }, { complete: done })
             },
             ...mapMutations({
                 setFullScreen: 'SET_FULL_SCREEN'
