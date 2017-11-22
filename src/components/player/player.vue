@@ -3,7 +3,7 @@
         <transition name="normal">
             <div class="normal-player" v-show="fullScreen">
                 <div class="background">
-                    <img :src="currentSong.image" width="100%" height="100%">
+                    <img :src="currentSong.image" width="auto" height="100%">
                 </div>
                 <div class="top">
                     <div class="back" @click="back">
@@ -21,7 +21,7 @@
                             :css="false"
                         >
                             <div class="cd-wrapper" v-show="fullScreen">
-                                <div class="cd">
+                                <div class="cd" :class="cdCls">
                                     <img class="image" :src="currentSong.image">
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                             <i class="icon-prev_song"></i>
                         </div>
                         <div class="icon i-center">
-                            <i class="icon-play"></i>
+                            <i :class="playIcon" @click.stop.prevent="togglePlaying"></i>
                         </div>
                         <div class="icon i-right">
                             <i class="icon-next_song"></i>
@@ -79,6 +79,7 @@
                 </div>
             </div>
         </transition>
+        <audio ref="audio" :src="currentSong.url"></audio>
     </div>
 </template>
 
@@ -93,13 +94,22 @@
             }
         },
         computed: {
+            playIcon() {
+                return this.playing ? 'icon-stop' : 'icon-play'
+            },
+            cdCls() {
+                return this.playing ? 'play' : 'play pause'
+            },
             ...mapGetters([
                 'fullScreen',
                 'playlist',
-                'currentSong'
+                'currentSong',
+                'playing'
             ])
         },
         created() {
+            console.log(this.currentSong)
+            console.log(this.playing)
         },
         methods: {
             back() {
@@ -125,6 +135,9 @@
                 el.style.transition = ''
                 el.style['transform'] = ''
             },
+            togglePlaying() {
+                this.setPlayingState(!this.playing)
+            },
             _getPosAndScale() {
                 const targetWidth = 20
                 const paddingLeft = 40
@@ -141,8 +154,22 @@
                 }
             },
             ...mapMutations({
-                setFullScreen: 'SET_FULL_SCREEN'
+                setFullScreen: 'SET_FULL_SCREEN',
+                setPlayingState: 'SET_PLAYING_STATE'
             })
+        },
+        watch: {
+            currentSong(newSong, oldSong) {
+                this.$nextTick(() => {
+                    this.$refs.audio.play()
+                })
+            },
+            playing(newPlaying) {
+                const audio = this.$refs.audio
+                this.$nextTick(() => {
+                    newPlaying ? audio.play() : audio.pause()
+                })
+            }
         },
         components: {
         }
@@ -169,8 +196,9 @@
                 width 100%
                 height 100%
                 z-index -1
+                overflow hidden
                 opacity .6
-                filter blur(20px)
+                filter blur(30px)
             .top
                 padding 0 50px
                 height 50px
@@ -229,6 +257,11 @@
                             box-sizing border-box
                             border 6px solid rgba(255, 255, 255, 0.1)
                             border-radius 50%
+                            // transform translate3d(0, 0, 0)
+                            &.play
+                                animation rotate 20s linear infinite
+                            &.pause
+                                animation-play-state pause
                             .image
                                 width 100%
                                 height 100%
@@ -318,4 +351,10 @@
                 transition: all .4s
             &.mini-enter, &.mini-leave-to
                 opacity 0
+
+    @keyframes rotate
+        0%
+            transform rotate(0)
+        100%
+            transform rotate(360deg)
 </style>
