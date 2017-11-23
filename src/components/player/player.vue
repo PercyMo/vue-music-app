@@ -49,14 +49,14 @@
                         <div class="icon i-left">
                             <i class="icon-loop_single"></i>
                         </div>
-                        <div class="icon i-left">
-                            <i class="icon-prev_song"></i>
+                        <div class="icon i-left" :class="disableCls">
+                            <i @click="prev" class="icon-prev_song"></i>
                         </div>
-                        <div class="icon i-center">
+                        <div class="icon i-center" :class="disableCls">
                             <i :class="playIcon" @click.stop.prevent="togglePlaying"></i>
                         </div>
-                        <div class="icon i-right">
-                            <i class="icon-next_song"></i>
+                        <div class="icon i-right" :class="disableCls">
+                            <i @click="next" class="icon-next_song"></i>
                         </div>
                         <div class="icon i-right">
                             <i class="icon-like_out"></i>
@@ -68,18 +68,18 @@
         <transition name="mini">
             <div class="mini-player" v-show="!fullScreen" @click="open">
                 <div class="icon">
-                    <img :src="currentSong.image" width="40" height="40">
+                    <img :class="cdCls" :src="currentSong.image" width="40" height="40">
                 </div>
                 <div class="text">
                     <h2 class="name" v-html="currentSong.name"></h2>
                     <p class="desc" v-html="currentSong.singer"></p>
                 </div>
                 <div class="control">
-                    <i class="icon-play"></i>
+                    <i @click.stop.prevent="togglePlaying" :class="playIcon"></i>
                 </div>
             </div>
         </transition>
-        <audio ref="audio" :src="currentSong.url"></audio>
+        <audio ref="audio" :src="currentSong.url" @play="ready" @error="error"></audio>
     </div>
 </template>
 
@@ -90,7 +90,7 @@
     export default {
         data() {
             return {
-                show: false
+                songReady: false
             }
         },
         computed: {
@@ -100,16 +100,18 @@
             cdCls() {
                 return this.playing ? 'play' : 'play pause'
             },
+            disableCls() {
+                return this.songReady ? '' : 'disable'
+            },
             ...mapGetters([
                 'fullScreen',
                 'playlist',
+                'currentIndex',
                 'currentSong',
                 'playing'
             ])
         },
         created() {
-            console.log(this.currentSong)
-            console.log(this.playing)
         },
         methods: {
             back() {
@@ -136,7 +138,44 @@
                 el.style['transform'] = ''
             },
             togglePlaying() {
+                if (!this.songReady) {
+                    return
+                }
                 this.setPlayingState(!this.playing)
+            },
+            prev() {
+                if (!this.songReady) {
+                    return
+                }
+                let index = this.currentIndex - 1
+                if (index === -1) {
+                    index = this.playlist.length - 1
+                }
+                this.setCurrentIndex(index)
+                if (!this.playing) {
+                    this.togglePlaying()
+                }
+                this.songReady = false
+            },
+            next() {
+                if (!this.songReady) {
+                    return
+                }
+                let index = this.currentIndex + 1
+                if (index === this.playlist.length) {
+                    index = 0
+                }
+                this.setCurrentIndex(index)
+                if (!this.playing) {
+                    this.togglePlaying()
+                }
+                this.songReady = false
+            },
+            ready() {
+                this.songReady = true
+            },
+            error() {
+
             },
             _getPosAndScale() {
                 const targetWidth = 20
@@ -155,7 +194,8 @@
             },
             ...mapMutations({
                 setFullScreen: 'SET_FULL_SCREEN',
-                setPlayingState: 'SET_PLAYING_STATE'
+                setPlayingState: 'SET_PLAYING_STATE',
+                setCurrentIndex: 'SET_CURRENT_INDEX'
             })
         },
         watch: {
@@ -206,7 +246,6 @@
                 flex-direction column
                 justify-content center
                 position relative
-                // border-1px(rgba(0, 0, 0, 0.5))
                 .back
                     position absolute
                     top 0
@@ -255,13 +294,13 @@
                             height 100%
                             position relative
                             box-sizing border-box
-                            border 6px solid rgba(255, 255, 255, 0.1)
+                            border 6px solid rgba(255, 255, 255, .1)
                             border-radius 50%
-                            // transform translate3d(0, 0, 0)
+                            transform translate3d(0, 0, 0)
                             &.play
-                                animation rotate 20s linear infinite
+                                animation rotate 30s linear infinite
                             &.pause
-                                animation-play-state pause
+                                animation-play-state paused
                             .image
                                 width 100%
                                 height 100%
@@ -299,16 +338,16 @@
                         i
                             font-size 26px
                         .icon-prev_song, .icon-next_song
-                            color rgba(255, 255, 255, 0.8)
+                            color rgba(255, 255, 255, .8)
                             font-size 30px
                     .i-center
                         i
-                            color rgba(255, 255, 255, 0.8)
+                            color rgba(255, 255, 255, .8)
                             font-size 45px
             &.normal-enter-active, &.normal-leave-active
                 transition: all .4s
                 .top, .bottom
-                    transition all .4s cubic-bezier(0.86, 0.18, 0.82, 1.32)
+                    transition all .4s cubic-bezier(.86, .18, .82, 1.32)
             &.normal-enter, &.normal-leave-to
                 opacity 0
                 .top
@@ -330,6 +369,10 @@
                 padding 5px
                 img
                     border-radius 50%
+                    &.play
+                        animation rotate 30s linear infinite
+                    &.pause
+                        animation-play-state paused
             .text
                 display flex
                 flex 1

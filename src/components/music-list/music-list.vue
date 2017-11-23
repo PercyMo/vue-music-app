@@ -164,6 +164,7 @@
             height 0
             transform-origin top
             background-size cover
+            transform translate3d(0, 0, 0)
             .filter
                 position absolute
                 top 0
