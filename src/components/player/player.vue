@@ -39,11 +39,15 @@
                         <span class="dot"></span>
                     </div>
                     <div class="progress-wrapper">
-                        <span class="time time-l">当前时间</span>
-                        <div class="progress-wrapper">
-                            进度条
+                        <div class="time time-l">
+                            <span>{{format(currentTime)}}</span>
                         </div>
-                        <span class="time time-r">总时长</span>
+                        <div class="progress-bar-wrapper">
+                            <progress-bar :percent="percent" @percentChange="onProgressChange"></progress-bar>
+                        </div>
+                        <div class="time time-r">
+                            <span>{{format(currentSong.duration)}}</span>
+                        </div>
                     </div>
                     <div class="operators">
                         <div class="icon i-left">
@@ -79,18 +83,20 @@
                 </div>
             </div>
         </transition>
-        <audio ref="audio" :src="currentSong.url" @play="ready" @error="error"></audio>
+        <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="timeupdate"></audio>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import {mapGetters, mapMutations} from 'vuex'
+    import progressBar from 'base/progress-bar/progress-bar'
     import Velocity from 'velocity-animate'
 
     export default {
         data() {
             return {
-                songReady: false
+                songReady: false,
+                currentTime: 0
             }
         },
         computed: {
@@ -102,6 +108,9 @@
             },
             disableCls() {
                 return this.songReady ? '' : 'disable'
+            },
+            percent() {
+                return this.currentTime / this.currentSong.duration
             },
             ...mapGetters([
                 'fullScreen',
@@ -175,7 +184,28 @@
                 this.songReady = true
             },
             error() {
-
+                this.songReady = true
+            },
+            timeupdate(e) {
+                this.currentTime = e.target.currentTime
+            },
+            format(time) {
+                time =  time | 0
+                const minute = this._pad(time / 60 | 0)
+                const second = this._pad(time % 60)
+                return `${minute}:${second}`
+            },
+            onProgressChange(precent) {
+                console.log('检测到进度条变化')
+                console.log(precent)
+            },
+            _pad(num, n = 2) {
+                let len = num.toString().length
+                while (len < n) {
+                    num = '0' + num
+                    len++
+                }
+                return num
             },
             _getPosAndScale() {
                 const targetWidth = 20
@@ -212,6 +242,7 @@
             }
         },
         components: {
+            progressBar
         }
     }
 </script>
@@ -326,8 +357,23 @@
                 .progress-wrapper
                     margin 0 auto
                     padding 10px 0
-                    width 80%
+                    width 86%
                     display flex
+                    .progress-bar-wrapper
+                        flex 1
+                    .time
+                        width 30px
+                        flex 0 0 35px
+                        color $color-theme-w
+                        font-size $font-size-small
+                        line-height 30px
+                        span
+                            display block
+                            transform scale(0.8)
+                        &.time-l
+                            text-align left
+                        &.time-r
+                            text-align right
                 .operators
                     display flex
                     align-items center
@@ -335,6 +381,9 @@
                         flex 1
                         color $color-theme-w
                         text-align center
+                        &.disable
+                            i
+                                color $color-theme-w
                         i
                             font-size 26px
                         .icon-prev_song, .icon-next_song
