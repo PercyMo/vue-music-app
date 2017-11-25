@@ -325,24 +325,35 @@
                             height 100%
                             position relative
                             box-sizing border-box
-                            border 6px solid rgba(255, 255, 255, .1)
+                            border 5px solid rgba(255, 255, 255, .1)
                             border-radius 50%
                             transform translate3d(0, 0, 0)
+                            overflow hidden
+                            &:after
+                                content ' '
+                                position absolute
+                                top -12px
+                                left -12px
+                                right -12px
+                                bottom -12px
+                                background url(./cd-bg.png) no-repeat
+                                background-size contain
+                                z-index 2
                             &.play
                                 animation rotate 30s linear infinite
                             &.pause
                                 animation-play-state paused
                             .image
-                                width 100%
-                                height 100%
+                                width 74%
+                                height 74%
                                 position absolute
-                                top 0
-                                left 0
+                                top 13%
+                                left 13%
                                 border-radius 50%
             .bottom
                 width 100%
                 position absolute
-                bottom 50px
+                bottom 30px
                 .dot-wrapper
                     font-size 0
                     text-align center
