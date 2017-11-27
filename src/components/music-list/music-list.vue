@@ -29,8 +29,10 @@
     import Loading from 'base/loading/loading'
     import SongList from 'base/song-list/song-list'
     import {mapActions} from 'vuex'
+    import {prefixStyle} from 'common/js/dom'
 
     const RESERVED_HEIGHT = 50
+    const transform = prefixStyle('transform')
 
     export default {
         props: {
@@ -106,8 +108,7 @@
                     this.$refs.bgImage.style.paddingTop = '60%'
                     this.$refs.bgImage.style.height = 0
                 }
-                this.$refs.bgImage.style['transform'] = `scale(${scale})`
-                this.$refs.bgImage.style['webkitTransform'] = `scale(${scale})`
+                this.$refs.bgImage.style[transform] = `scale(${scale})`
                 this.$refs.bgImage.style.zIndex = zIndex
             }
         },

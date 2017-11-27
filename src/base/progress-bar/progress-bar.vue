@@ -1,5 +1,9 @@
 <template>
-    <div class="progress-bar" ref="progressBar">
+    <div class="progress-bar"
+        ref="progressBar"
+        @touchstart.stop.prevent="progressTouchStart"
+        @touchmove.top.prevent="progressTouchMove"
+        @touchend.stop.prevent="progressTouchEnd">
         <div class="bar-inner">
             <div class="progress" ref="progress"></div>
             <div class="progress-btn-wrapper" ref="progressBtn">
@@ -10,8 +14,10 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import {prefixStyle} from 'common/js/dom'
 
     const progressBtnWidth = 12
+    const transform = prefixStyle('transform')
 
     export default {
         props: {
@@ -27,8 +33,26 @@
         computed: {
         },
         created() {
+            this.touch = {}
         },
         methods: {
+            progressTouchStart(e) {
+                const rect = this.$refs.progressBar.getBoundingClientRect()
+                const startX = e.touches[0].pageX
+                this.touch.disLeft = rect.left
+                const offsetWidth = startX - this.touch.disLeft
+                this._offset(offsetWidth)
+            },
+            progressTouchMove(e) {
+                console.log('TouchMove')
+                console.log(e)
+            },
+            progressTouchEnd() {
+                console.log('TouchEnd')
+            },
+            _offset(offsetWidth) {
+                
+            }
         },
         watch: {
             percent(newPercent) {
@@ -37,7 +61,7 @@
                     const offsetWidth = barWidth * newPercent
                     const progressWidth = offsetWidth + progressBtnWidth / 2
                     this.$refs.progress.style.width = `${progressWidth}px`
-                    this.$refs.progressBtn.style['transform'] = `translate3d(${offsetWidth}px, 0, 0)`
+                    this.$refs.progressBtn.style[transform] = `translate3d(${offsetWidth}px, 0, 0)`
                 }
             }
         }

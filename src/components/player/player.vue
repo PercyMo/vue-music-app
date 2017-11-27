@@ -91,6 +91,9 @@
     import {mapGetters, mapMutations} from 'vuex'
     import progressBar from 'base/progress-bar/progress-bar'
     import Velocity from 'velocity-animate'
+    import {prefixStyle} from 'common/js/dom'
+
+    const transform = prefixStyle('transform')
 
     export default {
         data() {
@@ -139,12 +142,12 @@
             leave(el, done) {
                 el.style.transition = 'all 0.4s'
                 const {x, y, scale} = this._getPosAndScale()
-                el.style['transform'] = `translate3d(${x}px,${y}px,0) scale(${scale})`
+                el.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
                 el.addEventListener('transitionend', done)
             },
             afterLeave(el) {
                 el.style.transition = ''
-                el.style['transform'] = ''
+                el.style[transform] = ''
             },
             togglePlaying() {
                 if (!this.songReady) {
