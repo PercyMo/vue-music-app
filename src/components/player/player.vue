@@ -199,8 +199,9 @@
                 return `${minute}:${second}`
             },
             onProgressChange(precent) {
-                console.log('检测到进度条变化')
-                console.log(precent)
+                const currTime = this.currentSong.duration * precent
+                this.$refs.audio.currentTime = currTime
+
             },
             _pad(num, n = 2) {
                 let len = num.toString().length
@@ -383,7 +384,7 @@
                         line-height 30px
                         span
                             display block
-                            transform scale(0.8)
+                            transform scale(.8)
                         &.time-l
                             text-align left
                         &.time-r
