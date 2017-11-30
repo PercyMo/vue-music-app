@@ -79,7 +79,12 @@
                     <p class="desc" v-html="currentSong.singer"></p>
                 </div>
                 <div class="control">
-                    <i @click.stop.prevent="togglePlaying" :class="playIcon"></i>
+                    <progress-circle :radius="radius" :percent="percent">
+                        <i @click.stop.prevent="togglePlaying" class="icon-mini" :class="miniIcon"></i>
+                    </progress-circle>
+                </div>
+                <div class="control">
+                    <i class="icon-playlist"></i>
                 </div>
             </div>
         </transition>
@@ -89,7 +94,8 @@
 
 <script type="text/ecmascript-6">
     import {mapGetters, mapMutations} from 'vuex'
-    import progressBar from 'base/progress-bar/progress-bar'
+    import ProgressBar from 'base/progress-bar/progress-bar'
+    import ProgressCircle from 'base/progress-circle/progress-circle'
     import Velocity from 'velocity-animate'
     import {prefixStyle} from 'common/js/dom'
 
@@ -99,12 +105,16 @@
         data() {
             return {
                 songReady: false,
-                currentTime: 0
+                currentTime: 0,
+                radius: 28
             }
         },
         computed: {
             playIcon() {
                 return this.playing ? 'icon-stop' : 'icon-play'
+            },
+            miniIcon() {
+                return this.playing ? 'icon-mini-stop' : 'icon-mini-play'
             },
             cdCls() {
                 return this.playing ? 'play' : 'play pause'
@@ -246,7 +256,8 @@
             }
         },
         components: {
-            progressBar
+            ProgressBar,
+            ProgressCircle
         }
     }
 </script>
@@ -452,8 +463,23 @@
                     color $color-text-d
                     font-size $font-size-small
             .control
-                width 30px
-                flex 0 0 30px
+                padding 10px 10px 0
+                width 28px
+                flex 0 0 28px
+                .icon-mini-stop, .icon-mini-play
+                    color $color-background-b
+                    font-size 28px
+                .icon-playlist
+                    padding-top 4px
+                    display block
+                    color $color-text-l
+                    font-size 21px
+                .icon-mini
+                    padding-top 1px
+                    display block
+                    position absolute
+                    top 0
+                    left 0
             &.mini-enter-active, &.mini-leave-active
                 transition: all .4s
             &.mini-enter, &.mini-leave-to
