@@ -5,6 +5,12 @@
         </div>
         <h1 class="title" v-html="title"></h1>
         <div class="bg-image" :style="bgStyle" ref="bgImage">
+            <div class="play-wrapper">
+                <div ref="playBtn" v-if="songs.length > 0" @click.stop.prevent="random" class="play">
+                    <i class="icon-play"></i>
+                    <span class="text">随机播放全部</span>
+                </div>
+            </div>
             <div class="filter"></div>
             <div class="tit-mask" ref="mask"></div>
         </div>
@@ -72,6 +78,11 @@
             back() {
                 this.$router.back()
             },
+            random() {
+                this.randomPlay({
+                    list: this.songs
+                })
+            },
             scroll(pos) {
                 this.scrollY = pos.y
             },
@@ -82,7 +93,8 @@
                 })
             },
             ...mapActions([
-                'selectPlay'
+                'selectPlay',
+                'randomPlay'
             ])
         },
         watch: {
@@ -104,9 +116,11 @@
                     zIndex = 10
                     this.$refs.bgImage.style.paddingTop = 0
                     this.$refs.bgImage.style.height = `${RESERVED_HEIGHT}px`
+                    this.$refs.playBtn.style.display = 'none'
                 } else {
                     this.$refs.bgImage.style.paddingTop = '60%'
                     this.$refs.bgImage.style.height = 0
+                    this.$refs.playBtn.style.display = ''
                 }
                 this.$refs.bgImage.style[transform] = `scale(${scale})`
                 this.$refs.bgImage.style.zIndex = zIndex
@@ -166,6 +180,29 @@
             transform-origin top
             background-size cover
             transform translate3d(0, 0, 0)
+            .play-wrapper
+                width 100%
+                position absolute
+                bottom 20px
+                z-index 50
+                .play
+                    margin 0 auto
+                    padding 7px 0
+                    width 135px
+                    color $color-text-w
+                    font-size 0
+                    text-align center
+                    border 1px solid $color-theme-w
+                    border-radius 100px
+                    .icon-play
+                        margin-right 6px
+                        display inline-block
+                        font-size $font-size-medium-x
+                        vertical-align middle
+                    .text
+                        display inline-block
+                        font-size $font-size-small
+                        vertical-align middle
             .filter
                 position absolute
                 top 0

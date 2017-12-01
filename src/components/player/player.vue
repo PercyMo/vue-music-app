@@ -51,7 +51,7 @@
                     </div>
                     <div class="operators">
                         <div class="icon i-left">
-                            <i class="icon-loop_single"></i>
+                            <i :class="iconMode"  @click.stop.prevent="changeMode"></i>
                         </div>
                         <div class="icon i-left" :class="disableCls">
                             <i @click="prev" class="icon-prev_song"></i>
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </transition>
-        <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="timeupdate"></audio>
+        <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="timeupdate" @ended="end"></audio>
     </div>
 </template>
 
@@ -98,6 +98,8 @@
     import ProgressCircle from 'base/progress-circle/progress-circle'
     import Velocity from 'velocity-animate'
     import {prefixStyle} from 'common/js/dom'
+    import {playMode} from 'common/js/config'
+    import {shuffle} from 'common/js/util'
 
     const transform = prefixStyle('transform')
 
@@ -116,6 +118,22 @@
             miniIcon() {
                 return this.playing ? 'icon-mini-stop' : 'icon-mini-play'
             },
+            iconMode() {
+                const type = this.mode
+                switch (type) {
+                    case playMode.sequence:
+                        return 'icon-loop_all'
+                        break
+                    case playMode.loop:
+                        return 'icon-loop_single'
+                        break
+                    case playMode.random:
+                        return 'icon-random'
+                        break
+                    default:
+                        break
+                }
+            },
             cdCls() {
                 return this.playing ? 'play' : 'play pause'
             },
@@ -128,9 +146,11 @@
             ...mapGetters([
                 'fullScreen',
                 'playlist',
+                'sequenceList',
                 'currentIndex',
                 'currentSong',
-                'playing'
+                'playing',
+                'mode'
             ])
         },
         created() {
@@ -164,6 +184,17 @@
                     return
                 }
                 this.setPlayingState(!this.playing)
+            },
+            end() {
+                if (this.mode === playMode.loop) {
+                    this.loop()
+                } else {
+                    this.next()
+                }
+            },
+            loop() {
+                this.$refs.audio.currentTime = 0
+                this.$refs.audio.play()
             },
             prev() {
                 if (!this.songReady) {
@@ -213,6 +244,24 @@
                 this.$refs.audio.currentTime = currTime
 
             },
+            changeMode() {
+                const mode = (this.mode + 1) % 3
+                this.setPlayMode(mode)
+                let list = []
+                if (this.mode === playMode.random) {
+                    list = shuffle(this.sequenceList)
+                } else {
+                    list = this.sequenceList
+                }
+                this._resetCurrentIndex(list)
+                this.setPlayList(list)
+            },
+            _resetCurrentIndex(list) {
+                let index = list.findIndex((item) => {
+                    return item.id === this.currentSong.id
+                })
+                this.setCurrentIndex(index)
+            },
             _pad(num, n = 2) {
                 let len = num.toString().length
                 while (len < n) {
@@ -239,11 +288,19 @@
             ...mapMutations({
                 setFullScreen: 'SET_FULL_SCREEN',
                 setPlayingState: 'SET_PLAYING_STATE',
-                setCurrentIndex: 'SET_CURRENT_INDEX'
+                setCurrentIndex: 'SET_CURRENT_INDEX',
+                setPlayMode: 'SET_PLAY_MODE',
+                setPlayList: 'SET_PLAYLIST'
             })
         },
         watch: {
             currentSong(newSong, oldSong) {
+                if (!newSong.id) {
+                    return
+                }
+                if (newSong.id === oldSong.id) {
+                    return
+                }
                 this.$nextTick(() => {
                     this.$refs.audio.play()
                 })
