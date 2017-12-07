@@ -1,6 +1,6 @@
 ## 前言
-本项目为学习慕课网Vue.js音乐App高级实战课之后的练习项目，需要学习者请转至黄佚老师账号下查看源码，或者慕课网购买原版视频。
-本项目所使用的音乐及图片等资源，是直接抓取QQ音乐官网的线上接口，仅作为项目练习使用，不用做商业用途。
+* 本项目为学习慕课网Vue.js音乐App高级实战课之后的练习项目，需要学习者请转至黄佚老师账号下查看源码，或者慕课网购买原版视频。
+* 本项目所使用的音乐及图片等资源，是直接抓取QQ音乐官网的线上接口，仅作为项目练习使用，不用做商业用途。
 
 ### 技术栈
 vue2 + vuex + vue-router + axios + webpack + ES6 + styls
@@ -32,9 +32,32 @@ npm run dev
 ├── src                                         // 源码目录
 │   ├── api                                     // api相关封装
 │   ├── base                                    // 基础组件
+│   │   ├── listview                            // 歌手列表组件
+│   │   ├── loading                             // 加载中...
+│   │   ├── progress-bar                        // 横向进度条
+│   │   ├── progress-circle                     // 圆形进度条
+│   │   ├── scroll                              // 基础滚动组件
+│   │   ├── silder                              // 幻灯片组件
+│   │   └── song-list                           // 歌曲列表
 │   ├── common                                  // 公共资源文件
+│   │   ├── fonts                               // 字体文件
+│   │   ├── image                               // 公共图片
+│   │   ├── js                                  // 公用函数封装
+│   │   └── stylus                              // 基础样式文件
 │   ├── components                              // 业务逻辑组件
+│   │   ├── disc                                // 
+│   │   ├── m-header                            // App头部
+│   │   ├── music-list                          // 音乐专辑页面
+│   │   ├── player                              // 播放器组件
+│   │   ├── rank                                // 排行榜
+│   │   ├── recommend                           // 热门歌单推荐
+│   │   ├── search                              // 
+│   │   ├── singer                              // 歌手组件
+│   │   ├── singer-detail                       // 歌手详情组件
+│   │   ├── tab                                 // 全局tab导航
+│   │   └── top-list                            // 
 │   ├── router                                  // 路由相关
+│   │   └── index.js
 │   ├── sotre                                   // vuex状态管理
 │   │   ├── actions.js                          // 配置actions
 │   │   ├── getter.js                           // 配置getter
