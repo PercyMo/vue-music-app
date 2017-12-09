@@ -7,10 +7,10 @@ vue2 + vuex + vue-router + axios + webpack + ES6 + styls
 ### 项目运行
 
 ```
-git clone https://github.com/PosyMo/vue-music-app.git
-cd vue-music-app
-npm install
-npm run dev
+$ git clone https://github.com/PosyMo/vue-music-app.git
+$ cd vue-music-app
+$ npm install
+$ npm run dev
 ```
 
 ## 说明
