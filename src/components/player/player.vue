@@ -21,7 +21,7 @@
                             :css="false"
                         >
                             <div class="cd-wrapper" v-show="fullScreen">
-                                <div class="cd" :class="cdCls" @click="test">
+                                <div class="cd" :class="cdCls">
                                     <img class="image" :src="currentSong.image">
                                 </div>
                             </div>
@@ -100,9 +100,7 @@
     import {prefixStyle} from 'common/js/dom'
     import {playMode} from 'common/js/config'
     import {shuffle} from 'common/js/util'
-
-
-    import {getLyric} from 'api/song'
+    
 
     const transform = prefixStyle('transform')
 
@@ -159,21 +157,6 @@
         created() {
         },
         methods: {
-            test() {
-                console.log('测试')
-                let mid = this.currentSong.mid
-                getLyric(mid).then((res) => {
-                    console.log(res)
-                    // if(res.code === ERR_OK) {
-                    //     this.recommends = res.data.slider
-                    // }
-                })
-            },
-
-
-
-
-
             back() {
                 this.setFullScreen(false)
             },
@@ -321,6 +304,7 @@
                 }
                 this.$nextTick(() => {
                     this.$refs.audio.play()
+                    this.currentSong.getLyric()
                 })
             },
             playing(newPlaying) {
