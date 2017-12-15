@@ -100,6 +100,7 @@
     import {prefixStyle} from 'common/js/dom'
     import {playMode} from 'common/js/config'
     import {shuffle} from 'common/js/util'
+    import Lyric from 'common/js/lyric-parser'
     
 
     const transform = prefixStyle('transform')
@@ -245,6 +246,14 @@
                 this.$refs.audio.currentTime = currTime
 
             },
+            getLyric() {
+                this.currentSong.getLyric().then((lyric) => {
+                    if (this.currentSong.lyric !== lyric) {
+                        return
+                    }
+                    console.log(lyric)
+                })
+            },
             changeMode() {
                 const mode = (this.mode + 1) % 3
                 this.setPlayMode(mode)
@@ -304,7 +313,7 @@
                 }
                 this.$nextTick(() => {
                     this.$refs.audio.play()
-                    this.currentSong.getLyric()
+                    this.getLyric()
                 })
             },
             playing(newPlaying) {
