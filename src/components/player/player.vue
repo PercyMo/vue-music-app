@@ -12,8 +12,11 @@
                     <h1 class="title" v-html="currentSong.name"></h1>
                     <h2 class="subtitle" v-html="currentSong.singer"></h2>
                 </div>
-                <div class="middle">
-                    <div class="middle-l">
+                <div class="middle"
+                    @touchstart.prevent="middleTouchStart"
+                    @touchmove.prevent="middleTouchMove"
+                    @touchend="middleTouchEnd">
+                    <div class="middle-l" ref="middleL">
                         <transition
                             @enter="enter"
                             @leave="leave"
@@ -27,16 +30,23 @@
                             </div>
                         </transition>
                         <div class="playing-lyric-wrapper">
-                            <div class="playing-lyric">
-                                此处缺省歌词
-                            </div>
+                            <div class="playing-lyric">{{playingLyric}}</div>
                         </div>
                     </div>
+                    <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
+                        <div class="lyric-wrapper">
+                            <div v-if="currentLyric">
+                                <p class="text" ref="lyricLine" v-for="(line, index) in currentLyric.lines" :class="{'current':index === currentLineNum}">
+                                    {{line.txt}}
+                                </p>
+                            </div>
+                        </div>
+                    </scroll>
                 </div>
                 <div class="bottom">
                     <div class="dot-wrapper">
-                        <span class="dot"></span>
-                        <span class="dot"></span>
+                        <span class="dot" :class="{'active':currentShow==='cd'}"></span>
+                        <span class="dot" :class="{'active':currentShow==='lyric'}"></span>
                     </div>
                     <div class="progress-wrapper">
                         <div class="time time-l">
@@ -101,6 +111,7 @@
     import {playMode} from 'common/js/config'
     import {shuffle} from 'common/js/util'
     import Lyric from 'common/js/lyric-parser'
+    import Scroll from 'base/scroll/scroll'
     
 
     const transform = prefixStyle('transform')
@@ -110,7 +121,11 @@
             return {
                 songReady: false,
                 currentTime: 0,
-                radius: 28
+                radius: 28,
+                currentLyric: {},
+                currentLineNum: 0,
+                currentShow: 'cd',
+                playingLyric: ''
             }
         },
         computed: {
@@ -156,6 +171,7 @@
             ])
         },
         created() {
+            this.touch = {}
         },
         methods: {
             back() {
@@ -186,6 +202,9 @@
                     return
                 }
                 this.setPlayingState(!this.playing)
+                if (this.currentLyric) {
+                    this.currentLyric.togglePlay()
+                }
             },
             end() {
                 if (this.mode === playMode.loop) {
@@ -251,8 +270,46 @@
                     if (this.currentSong.lyric !== lyric) {
                         return
                     }
-                    console.log(lyric)
+                    this.currentLyric = new Lyric(lyric, this.handleLyric)
+                    if (this.playing) {
+                        this.currentLyric.play()
+                    }
+                }).catch(() => {
+                    this.currentLyric = {}
+                    this.playingLyric = ''
+                    this.currentLineNum = 0
                 })
+            },
+            handleLyric({lineNum, txt}) {
+                this.currentLineNum = lineNum
+                if (lineNum > 5) {
+                    let lineEl = this.$refs.lyricLine[lineNum - 5]
+                    this.$refs.lyricList.scrollToElement(lineEl, 1000)
+                } else {
+                    this.$refs.lyricList.scrollTo(0, 0, 1000)
+                }
+                this.playingLyric = txt
+            },
+            middleTouchStart(e) {
+                const touch = e.touches[0]
+                this.touch.startX = touch.pageX
+                this.touch.startY = touch.pageY
+            },
+            middleTouchMove(e) {
+                const touch = e.touches[0]
+                const deltaX = touch.pageX - this.touch.startX
+                const deltaY = touch.pageY - this.touch.startY
+                if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                    return
+                }
+                const left = this.currentShow === 'cd' ? 0 : -window.innerWidth
+                const offsetWidth = Math.min(0, Math.max(-window.innerWidth, left + deltaX))
+                this.touch.percent = Math.abs(offsetWidth / window.innerWidth)
+                this.$refs.lyricList.$el.style[transform] = `translate3d(${offsetWidth}px,0,0)`
+                this.$refs.middleL.style.opacity = 1 - this.touch.percent
+            },
+            middleTouchEnd() {
+
             },
             changeMode() {
                 const mode = (this.mode + 1) % 3
@@ -325,7 +382,8 @@
         },
         components: {
             ProgressBar,
-            ProgressCircle
+            ProgressCircle,
+            Scroll
         }
     }
 </script>
@@ -387,8 +445,9 @@
                 width 100%
                 position fixed
                 top 80px
-                bottom 170px
+                bottom 150px
                 font-size 0
+                white-space nowrap
                 .middle-l
                     margin-top 45px
                     padding-top 70%
@@ -433,6 +492,33 @@
                                 top 13%
                                 left 13%
                                 border-radius 50%
+                    .playing-lyric-wrapper
+                        margin 30px auto
+                        width 80%
+                        text-align center
+                        overflow hidden
+                        .playing-lyric
+                            height 20px
+                            color $color-theme-w
+                            font-size $font-size-medium
+                            line-height 20px
+                .middle-r
+                    width 100%
+                    height 100%
+                    display inline-block
+                    vertical-align top
+                    overflow hidden
+                    .lyric-wrapper
+                        margin 0 auto
+                        width 80%
+                        overflow hidden
+                        text-align center
+                        .text
+                            color $color-theme-w
+                            font-size 15px
+                            line-height 36px
+                            &.current
+                                color $color-text-w
             .bottom
                 width 100%
                 position absolute
@@ -447,7 +533,9 @@
                         display inline-block
                         vertical-align middle
                         border-radius 50%
-                        background $color-text-l
+                        background rgba(0, 0, 0, .2)
+                        &.active
+                            background $color-text-l
                 .progress-wrapper
                     margin 0 auto
                     padding 10px 0
