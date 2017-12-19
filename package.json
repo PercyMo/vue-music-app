@@ -12,17 +12,18 @@
         "test": "npm run e2e"
     },
     "dependencies": {
-        "babel-runtime": "^6.26.0",
-        "fastclick": "^1.0.6",
-        "vue": "^2.4.2",
-        "vue-router": "^2.7.0",
-        "vuex": "^3.0.1",
-        "jsonp": "0.2.1",
-        "better-scroll": "^0.1.15",
         "axios": "^0.17.0",
-        "vue-lazyload": "^1.1.4",
+        "babel-runtime": "^6.26.0",
+        "better-scroll": "^0.1.15",
+        "fastclick": "^1.0.6",
+        "js-base64": "^2.4.0",
+        "jsonp": "0.2.1",
         "velocity-animate": "^1.5.0",
-        "js-base64": "^2.4.0"
+        "vue": "^2.4.2",
+        "vue-lazyload": "^1.1.4",
+        "vue-ripple-directive": "^2.0.1",
+        "vue-router": "^2.7.0",
+        "vuex": "^3.0.1"
     },
     "devDependencies": {
         "autoprefixer": "^7.1.2",

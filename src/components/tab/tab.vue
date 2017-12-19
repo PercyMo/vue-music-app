@@ -1,15 +1,15 @@
 <template>
     <div class="g-tab">
-        <router-link tag="div" class="g-tab-item" to="/recommend">
+        <router-link tag="div" v-ripple class="g-tab-item" to="/recommend">
             <span class="tab-link">推荐</span>
         </router-link>
-        <router-link tag="div" class="g-tab-item" to="/singer">
+        <router-link tag="div" v-ripple class="g-tab-item" to="/singer">
             <span class="tab-link">歌手</span>
         </router-link>
-        <router-link tag="div" class="g-tab-item" to="/rank">
+        <router-link tag="div" v-ripple class="g-tab-item" to="/rank">
             <span class="tab-link">排行</span>
         </router-link>
-        <router-link tag="div" class="g-tab-item" to="/search">
+        <router-link tag="div" v-ripple class="g-tab-item" to="/search">
             <span class="tab-link">搜索</span>
         </router-link>
     </div>
@@ -17,7 +17,10 @@
 
 <script type="text/ecmascript-6">
     export default {
-
+        data(){
+            return{
+            }
+        }
     }
 </script>
 
@@ -39,5 +42,4 @@
             .tab-link
                 color $color-theme
                 border-bottom 2px solid $color-theme
-
 </style>

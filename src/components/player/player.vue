@@ -112,9 +112,9 @@
     import {shuffle} from 'common/js/util'
     import Lyric from 'common/js/lyric-parser'
     import Scroll from 'base/scroll/scroll'
-    
 
     const transform = prefixStyle('transform')
+    const transitionDuration = prefixStyle('transitionDuration')
 
     export default {
         data() {
@@ -122,7 +122,7 @@
                 songReady: false,
                 currentTime: 0,
                 radius: 28,
-                currentLyric: {},
+                currentLyric: null,
                 currentLineNum: 0,
                 currentShow: 'cd',
                 playingLyric: ''
@@ -216,6 +216,10 @@
             loop() {
                 this.$refs.audio.currentTime = 0
                 this.$refs.audio.play()
+                this.setPlayingState(true)
+                if (this.currentLyric) {
+                    this.currentLyric.seek(0)
+                }
             },
             prev() {
                 if (!this.songReady) {
@@ -263,7 +267,9 @@
             onProgressChange(precent) {
                 const currTime = this.currentSong.duration * precent
                 this.$refs.audio.currentTime = currTime
-
+                if (this.currentLyric) {
+                    this.currentLyric.seek(currTime * 1000)
+                }
             },
             getLyric() {
                 this.currentSong.getLyric().then((lyric) => {
@@ -291,25 +297,64 @@
                 this.playingLyric = txt
             },
             middleTouchStart(e) {
+                this.touch.initiated = true
+                this.touch.move = false
                 const touch = e.touches[0]
                 this.touch.startX = touch.pageX
                 this.touch.startY = touch.pageY
             },
             middleTouchMove(e) {
+                if (!this.touch.initiated) {
+                    return
+                }
                 const touch = e.touches[0]
                 const deltaX = touch.pageX - this.touch.startX
                 const deltaY = touch.pageY - this.touch.startY
                 if (Math.abs(deltaY) > Math.abs(deltaX)) {
                     return
                 }
+                if (!this.touch.move) {
+                    this.touch.move = true
+                }
                 const left = this.currentShow === 'cd' ? 0 : -window.innerWidth
                 const offsetWidth = Math.min(0, Math.max(-window.innerWidth, left + deltaX))
                 this.touch.percent = Math.abs(offsetWidth / window.innerWidth)
+                this.$refs.lyricList.$el.style[transitionDuration] = 0
                 this.$refs.lyricList.$el.style[transform] = `translate3d(${offsetWidth}px,0,0)`
+                this.$refs.middleL.style[transitionDuration] = 0
                 this.$refs.middleL.style.opacity = 1 - this.touch.percent
             },
             middleTouchEnd() {
-
+                if (!this.touch.move) {
+                    return
+                }
+                let offsetWidth
+                let opacity
+                if (this.currentShow === 'cd') {
+                    if (this.touch.percent > 0.1) {
+                        offsetWidth = -window.innerWidth
+                        opacity = 0
+                        this.currentShow = 'lyric'
+                    } else {
+                        offsetWidth = 0
+                        opacity = 1
+                    }
+                } else {
+                    if (this.touch.percent < 0.9) {
+                        offsetWidth = 0
+                        opacity = 1
+                        this.currentShow = 'cd'
+                    } else {
+                        offsetWidth = -window.innerWidth
+                        opacity = 0
+                    }
+                }
+                const time = 300
+                this.$refs.lyricList.$el.style[transitionDuration] = `${time}ms`
+                this.$refs.lyricList.$el.style[transform] = `translate3d(${offsetWidth}px,0,0)`
+                this.$refs.middleL.style[transitionDuration] = `${time}ms`
+                this.$refs.middleL.style.opacity = opacity
+                this.touch.initiated = false
             },
             changeMode() {
                 const mode = (this.mode + 1) % 3
@@ -325,7 +370,7 @@
             },
             _resetCurrentIndex(list) {
                 let index = list.findIndex((item) => {
-                    return item.id === this.currentSong.id
+                    return item.id === this.currentSong.duration.id
                 })
                 this.setCurrentIndex(index)
             },
@@ -367,6 +412,12 @@
                 }
                 if (newSong.id === oldSong.id) {
                     return
+                }
+                if (this.currentLyric) {
+                    this.currentLyric.stop()
+                    this.currentTime = 0
+                    this.playingLyric = ''
+                    this.currentLineNum = 0
                 }
                 this.$nextTick(() => {
                     this.$refs.audio.play()
@@ -500,7 +551,7 @@
                         .playing-lyric
                             height 20px
                             color $color-theme-w
-                            font-size $font-size-medium
+                            font-size 15px
                             line-height 20px
                 .middle-r
                     width 100%

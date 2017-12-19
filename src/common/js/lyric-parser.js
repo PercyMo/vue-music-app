@@ -156,7 +156,7 @@ export default class Lyric {
         clearTimeout(this.timer)
     }
 
-    // 暂时还没用到，不知道干什么用的，以后再说，惭愧！
+    // 在指定位置开始播放
     seek(offset) {
         this.play(offset)
     }
