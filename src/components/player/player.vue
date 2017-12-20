@@ -239,15 +239,20 @@
                 if (!this.songReady) {
                     return
                 }
-                let index = this.currentIndex + 1
-                if (index === this.playlist.length) {
-                    index = 0
+                if (this.playlist.length === 1) {
+                    this.loop()
+                    return
+                } else {
+                    let index = this.currentIndex + 1
+                    if (index === this.playlist.length) {
+                        index = 0
+                    }
+                    this.setCurrentIndex(index)
+                    if (!this.playing) {
+                        this.togglePlaying()
+                    }
+                    this.songReady = false
                 }
-                this.setCurrentIndex(index)
-                if (!this.playing) {
-                    this.togglePlaying()
-                }
-                this.songReady = false
             },
             ready() {
                 this.songReady = true
@@ -281,7 +286,7 @@
                         this.currentLyric.play()
                     }
                 }).catch(() => {
-                    this.currentLyric = {}
+                    this.currentLyric = null
                     this.playingLyric = ''
                     this.currentLineNum = 0
                 })
@@ -370,7 +375,7 @@
             },
             _resetCurrentIndex(list) {
                 let index = list.findIndex((item) => {
-                    return item.id === this.currentSong.duration.id
+                    return item.id === this.currentSong.id
                 })
                 this.setCurrentIndex(index)
             },
@@ -419,10 +424,11 @@
                     this.playingLyric = ''
                     this.currentLineNum = 0
                 }
-                this.$nextTick(() => {
+                clearTimeout(this.timer)
+                this.timer = setTimeout(() => {
                     this.$refs.audio.play()
                     this.getLyric()
-                })
+                }, 1000)
             },
             playing(newPlaying) {
                 const audio = this.$refs.audio

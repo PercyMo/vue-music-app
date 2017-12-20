@@ -9,8 +9,10 @@ import Ripple from 'vue-ripple-directive'
 
 import 'common/stylus/index.styl'
 
+// 移动端点击300ms延迟和击穿
 fastclick.attach(document.body)
 
+// 图片懒加载
 Vue.use(VueLazyload, {
     loading: require('common/image/default.png')
 })
@@ -19,7 +21,6 @@ Vue.use(VueLazyload, {
 Ripple.color = 'rgba(0, 0, 0, 0.08)'
 Vue.directive('ripple', Ripple)
 
-/* eslint-disable no-new */
 new Vue({
     el: '#app',
     router,

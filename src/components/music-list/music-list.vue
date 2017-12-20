@@ -36,11 +36,13 @@
     import SongList from 'base/song-list/song-list'
     import {mapActions} from 'vuex'
     import {prefixStyle} from 'common/js/dom'
+    import {playlistMixin} from 'common/js/mixin'
 
     const RESERVED_HEIGHT = 50
     const transform = prefixStyle('transform')
 
     export default {
+        mixins: [playlistMixin],
         props: {
             songs: {
                 type: Array,
@@ -75,6 +77,11 @@
             this.$refs.list.$el.style.top = `${this.imageHeight}px`
         },
         methods: {
+            handlePlaylist(playlist) {
+                const bottom = playlist.length > 0 ? '50px' : ''
+                this.$refs.list.$el.style.bottom = bottom
+                this.$refs.list.refresh()
+            },
             back() {
                 this.$router.back()
             },

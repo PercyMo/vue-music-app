@@ -106,6 +106,9 @@
             }
         },
         methods: {
+            refresh() {
+                this.$refs.listview.refresh()
+            },
             scroll(pos) {
                 this.scrollY = Math.abs(Math.round(pos.y))
             },

@@ -30,8 +30,10 @@
     import {getTopList} from 'api/rank'
     import {ERR_OK} from 'api/config'
     import ImgDefault from 'common/image/album.png'
+    import {playlistMixin} from 'common/js/mixin'
 
     export default {
+        mixins: [playlistMixin],
         data() {
             return {
                 topList: []
@@ -41,6 +43,11 @@
             this._getTopList()
         },
         methods: {
+            handlePlaylist(playlist) {
+                const bottom = playlist.length > 0 ? '50px' : ''
+                this.$refs.rank.style.bottom = bottom
+                this.$refs.list.refresh()
+            },
             _getTopList() {
                 getTopList().then((res) => {
                     if (res.code === ERR_OK) {
