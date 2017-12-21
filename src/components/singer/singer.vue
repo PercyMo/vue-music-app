@@ -30,7 +30,6 @@
             handlePlaylist(playlist) {
                 const bottom = playlist.length > 0 ? '50px' : ''
                 this.$refs.singer.style.bottom = bottom
-                console.log(this.$refs.list)
                 this.$refs.list.refresh()
             },
             selectSinger(singer) {

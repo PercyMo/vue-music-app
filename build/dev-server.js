@@ -43,6 +43,30 @@ apiRoutes.get('/getDiscList', function(req, res) {
     })
 })
 
+apiRoutes.get('/getSongList', function(req, res) {
+    const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+
+    axios.get(url, {
+        headers: {
+            referer: 'https://c.y.qq.com/',
+            host: 'c.y.qq.com'
+        },
+        params: req.query
+    }).then((response) => {
+        var ret = response.data
+        if (typeof ret === 'string') {
+            let reg = /^\w+\(({[\S\s]+})\)$/
+            var matches = ret.match(reg)
+            if (matches) {
+                ret = JSON.parse(matches[1])
+            }
+        }
+        res.json(ret)
+    }).catch((e) => {
+        console.log(e)
+    })
+})
+
 apiRoutes.get('/getLyric', function(req, res) {
     const url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
 
