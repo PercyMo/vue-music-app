@@ -25,12 +25,12 @@
                         </li>
                     </ul>
                 </div>
-                <router-view></router-view>
             </div>
             <div class="loading-container" v-if="!discList.length">
                 <loading></loading>
             </div>
         </scroll>
+        <router-view></router-view>
     </div>
 </template>
 

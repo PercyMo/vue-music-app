@@ -1,18 +1,15 @@
 <template>
     <transition name="slide">
-        <div class="recomend-disc">
-            <p>asdad</p>
-            <p>asdad</p>
-            <p>asdad</p>
-            <p>asdad</p>
-        </div>
+        <music-list :songs="songs" :title="title" :bgImage="bgImage"></music-list>
     </transition>
 </template>
 
 <script type="text/ecmascript-6">
+    import MusicList from 'components/music-list/music-list'
     import {getSongList} from 'api/recommend'
     import {ERR_OK} from 'api/config'
     import {mapGetters} from 'vuex'
+    import {createSong} from 'common/js/song'
     
     export default {
         data() {
@@ -21,6 +18,12 @@
             }
         },
         computed: {
+            title() {
+                return this.disc.dissname
+            },
+            bgImage() {
+                return this.disc.imgurl
+            },
             ...mapGetters([
                 'disc'
             ])
@@ -35,16 +38,23 @@
                     return
                 }
                 getSongList(this.disc.dissid).then((res) => {
-                    console.log(res)
                     if (res.code === ERR_OK) {
-                        console.log('输出结果')
-                        console.log(res)
+                        this.songs = this._normalizeSongs(res.cdlist[0].songlist)
                     }
                 })
+            },
+            _normalizeSongs(list) {
+                let ret = []
+                list.forEach((musicData) => {
+                    if (musicData.songid && musicData.albummid) {
+                        ret.push(createSong(musicData))
+                    }
+                })
+                return ret
             }
         },
         components: {
-            
+            MusicList
         }
     }
 </script>
