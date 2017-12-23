@@ -22,7 +22,7 @@
             :probeType="probeType"
             :listenScroll="listenScroll"
             :bounce="true">
-            <song-list :songs="songs" @select="selectSong"></song-list>
+            <song-list :songs="songs" :rank="rank" @select="selectSong"></song-list>
             <div class="loading-container" v-if="!songs.length">
                 <loading></loading>
             </div>
@@ -55,6 +55,10 @@
             bgImage: {
                 type: String,
                 default: ''
+            },
+            rank: {
+                type: Boolean,
+                default: false
             }
         },
         data() {

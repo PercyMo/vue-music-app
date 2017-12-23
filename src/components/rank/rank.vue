@@ -31,6 +31,7 @@
     import {ERR_OK} from 'api/config'
     import ImgDefault from 'common/image/album.png'
     import {playlistMixin} from 'common/js/mixin'
+    import {mapMutations} from 'vuex'
 
     export default {
         mixins: [playlistMixin],
@@ -46,7 +47,7 @@
             handlePlaylist(playlist) {
                 const bottom = playlist.length > 0 ? '50px' : ''
                 this.$refs.rank.style.bottom = bottom
-                this.$refs.list.refresh()
+                this.$refs.toplist.refresh()
             },
             _getTopList() {
                 getTopList().then((res) => {
@@ -65,7 +66,11 @@
                 this.$router.push({
                     path: `/rank/${item.id}`
                 })
-            }
+                this.setTopList(item)
+            },
+            ...mapMutations({
+                setTopList: 'SET_TOP_LIST'
+            })
         },
         components: {
             Scroll,

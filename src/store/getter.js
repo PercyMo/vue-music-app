@@ -1,7 +1,10 @@
-//歌手列表
+// 推荐歌单
+export const disc = state => state.disc
+
+// 歌手列表
 export const singer = state => state.singer
 
-//播放器
+// 播放器
 export const playing = state => state.playing
 
 export const fullScreen = state => state.fullScreen
@@ -18,4 +21,5 @@ export const currentSong = (state) => {
     return state.playlist[state.currentIndex] || {}
 }
 
-export const disc = state => state.disc
+// 排行榜
+export const topList = state => state.topList

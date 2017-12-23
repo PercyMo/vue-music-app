@@ -3,7 +3,7 @@
         <ul>
             <li v-for="(song, index) in songs" :key="index" class="single" @click="selectSong(song, index)">
                 <div class="rank">
-                    <span v-text="getRankText(index)"></span>
+                    <span :class="getRankCls(index)" v-text="getRankText(index)"></span>
                 </div>
                 <div class="content">
                     <h2 class="name">{{song.name}}</h2>
@@ -20,9 +20,25 @@
             songs: {
                 type: Array,
                 default: []
+            },
+            rank: {
+                type: Boolean,
+                default: false
             }
         },
         methods: {
+            getRankCls(index) {
+                if (this.rank) {
+                    if (index === 0) {
+                        return 'top'
+                    } else if (index === 1) {
+                        return 'top1'
+                    } else if (index === 2) {
+                        return 'top2'
+                    }
+                }
+                return ''
+            },
             getRankText(index) {
                 return index + 1
             },
@@ -56,6 +72,15 @@
                 color $color-text-d
                 font-size $font-size-medium-x
                 text-align center
+                .top
+                    color #f00
+                    font-size $font-size-large
+                .top1
+                    color #00cd66
+                    font-size $font-size-large
+                .top2
+                    color #00bfff
+                    font-size $font-size-large
             .content
                 padding-right 40px
                 height 64px
