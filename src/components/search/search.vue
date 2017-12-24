@@ -1,6 +1,7 @@
 <template>
     <div class="search">
-        搜索页面
+        <div class="search-box-wrapper"></div>
+        <div class="shortcut-wrapper"></div>
     </div>
 </template>
 
