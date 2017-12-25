@@ -27,6 +27,9 @@
         methods: {
             clear() {
                 this.query = ''
+            },
+            setQuery(query) {
+                this.query = query
             }
         }
     }
@@ -43,7 +46,7 @@
         align-items center
         box-sizing border-box
         background $color-background-w
-        border-bottom 1px solid #ccc
+        border-bottom 1px solid $color-background-s
         .box
             margin 0 5px
             flex 1
@@ -54,6 +57,6 @@
             &::placeholder
                 color: $color-text-d
         .icon-close
-            color $color-background
+            color #000
             font-size 16px
 </style>
