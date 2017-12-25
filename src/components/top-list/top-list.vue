@@ -23,7 +23,10 @@
                 return this.topList.topTitle
             },
             bgImage() {
-                return this.topList.picUrl
+                if (this.songs.length) {
+                    return this.songs[0].image
+                }
+                return ''
             },
             ...mapGetters([
                 'topList'
