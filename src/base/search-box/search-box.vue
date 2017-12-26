@@ -1,7 +1,6 @@
 <template>
     <div class="search-box">
-        <!-- <i class="icon-search"></i> -->
-        <input ref="query" v-model="query" class="box" :placeholder="placeholder" />
+        <input ref="query" v-model="query" class="box" :placeholder="placeholder">
         <i @click="clear" v-show="query" class="icon-close"></i>
     </div>
 </template>
@@ -53,10 +52,10 @@
             color $color-text
             font-size $font-size-medium
             line-height 18px
-            background $color-background-w
+            background none
             &::placeholder
                 color: $color-text-d
         .icon-close
-            color #000
+            color $color-text
             font-size 16px
 </style>

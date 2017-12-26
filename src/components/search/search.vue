@@ -3,7 +3,7 @@
         <div class="search-box-wrapper">
             <search-box ref="searchBox" @query="onQueryChange"></search-box>
         </div>
-        <div class="shortcut-wrapper">
+        <div class="shortcut-wrapper" ref="shortcutWrapper" v-show="!query">
             <scroll ref="shortcut" class="shortcut">
                 <div>
                     <div class="hot-key">
@@ -20,13 +20,15 @@
                 </div>
             </scroll>
         </div>
-        <div class="search-result">
+        <div class="search-result" v-show="query" ref="search-result">
+            <suggest ref="suggest" :query="query"></suggest>
         </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import SearchBox from 'base/search-box/search-box'
+    import Suggest from 'components/suggest/suggest'
     import Scroll from 'base/scroll/scroll'
     import {getHotKey} from 'api/search'
     import {ERR_OK} from 'api/config'
@@ -58,6 +60,7 @@
         },
         components: {
             SearchBox,
+            Suggest,
             Scroll
         }
     }
