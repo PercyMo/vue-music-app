@@ -13,25 +13,25 @@ export function getHotKey() {
     return jsonp(url, data, options)
 }
 
-export function search(query, page, zhida, perpae) {
-    const url = 'https://c.y.qq.com/soso/fcgi-bin/client_search_cp'
+export function search(query, page, zhida, perpage) {
+    const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
 
     const data = Object.assign({}, commonParams, {
         w: query,
         p: page,
-        perpae,
-        n: perpae,
+        perpage,
+        n: perpage,
         catZhida: zhida ? 1 : 0,
         zhidaqu: 1,
         t: 0,
-        falg: 1,
+        flag: 1,
         ie: 'utf-8',
         sem: 1,
         aggr: 0,
         remoteplace: 'txt.mqq.all',
         platform: 'yqq',
         uin: 0,
-        needNewCode: 0
+        needNewCode: 1
     })
 
     return jsonp(url, data, options)
