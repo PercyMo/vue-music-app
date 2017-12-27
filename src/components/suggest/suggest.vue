@@ -101,6 +101,14 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
     @import "~common/stylus/variable"
+    @import "~common/stylus/mixin"
     
-    
+    .suggest
+        height 100%
+        overflow hidden
+        .suggest-list
+            padding 0 5px
+            .suggest-item
+                padding-bottom 1px
+                border-1px(rgba(7, 17, 27, 0.1))
 </style>
