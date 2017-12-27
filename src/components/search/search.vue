@@ -94,4 +94,9 @@
                         font-size $font-size-medium
                         border 1px solid $color-background-s
                         border-radius 15px
+        .search-result
+            position fixed
+            width 100%
+            top 170px
+            bottom 0
 </style>

@@ -2,10 +2,22 @@
     <div class="suggest">
         <ul class="suggest-list">
             <li class="suggest-item" v-for="item in result">
-                <div class="disc">
-                    <p class="name" v-html=""></p>
-                    <p class="text"></p>
-                </div>
+                <template v-if="item.type === 'singer'">
+                    <div class="singer-box">
+                        <div class="pic">
+                            <img :src="item.image" width="60px" height="60px">
+                        </div>
+                        <p class="singer">歌手：
+                            <em>{{item.singername}}</em>
+                        </p>
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="disc">
+                        <p class="name" v-html="highlightText(item.name)"></p>
+                        <p class="text" v-html="getDisTxt(item)"></p>
+                    </div>
+                </template>
             </li>
         </ul>
     </div>
@@ -42,7 +54,6 @@
                 this.page = 1
                 search(this.query, this.page, this.showSinger, perpage).then((res) => {
                     if (res.code === ERR_OK) {
-                        console.log(res)
                         this.result = this._genResult(res.data)
                     }
                 })
@@ -50,6 +61,7 @@
             _genResult(data) {
                 let ret = []
                 if (data.zhida && data.zhida.singerid) {
+                    data.zhida.image = `https://y.gtimg.cn/music/photo_new/T001R300x300M000${data.zhida.singermid}.jpg?max_age=259200`
                     // ES6 扩展运算符
                     ret.push({...data.zhida, ...{type: TYPE_SINGER}})
                 }
@@ -66,6 +78,15 @@
                     }
                 })
                 return ret
+            },
+            getDisTxt(item) {
+                let ret = `${item.singer} - ${item.album}`
+                return this.highlightText(ret)
+            },
+            highlightText(str) {
+                const str1 = this.query
+                const str2 = `<em>${str1}</em>`
+                return str.replace(new RegExp(`${str1}`, 'g'), str2)
             }
         },
         watch: {
