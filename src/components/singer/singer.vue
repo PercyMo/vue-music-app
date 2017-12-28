@@ -1,5 +1,5 @@
 <template>
-    <div class="singer" ref="singer">
+    <div class="singer-page" ref="singer">
         <list-view :data="singers" @select="selectSinger" ref="list"></list-view>
         <router-view></router-view>
     </div>
@@ -99,7 +99,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-    .singer
+    .singer-page
         position fixed
         width 100%
         top 81px

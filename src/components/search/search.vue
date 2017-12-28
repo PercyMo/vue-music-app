@@ -75,16 +75,16 @@
         .shortcut-wrapper
             width 100%
             position fixed
-            top 170px
+            top 160px
             bottom 0
             .shortcut
                 height 100%
                 overflow hidden
                 .hot-key
-                    margin 0 15px 20px
+                    margin 0 10px 20px
                     .title
                         margin-bottom 10px
-                        color $color-text-l
+                        color $color-text-ll
                         font-size $font-size-small
                     .key-item
                         margin 0 10px 10px 0
@@ -92,11 +92,20 @@
                         display inline-block
                         color $color-text
                         font-size $font-size-medium
-                        border 1px solid $color-background-s
-                        border-radius 15px
+                        position relative
+                        &:after
+                            content ''
+                            position absolute
+                            top -10px
+                            left -20px
+                            bottom -10px
+                            right -20px
+                            border-radius 35                                    px
+                            border 1px solid $color-background-s
+                            transform scale(.6)
         .search-result
             position fixed
             width 100%
-            top 170px
+            top 150px
             bottom 0
 </style>
