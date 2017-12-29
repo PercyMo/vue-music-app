@@ -27,7 +27,7 @@
             </ul>
             <loading v-show="isLoading"></loading>
             <div v-show="!isLoading && !result.length" class="no-result-wrapper">
-                抱歉，暂无搜索结果
+                
             </div>
         </div>
     </scroll>
