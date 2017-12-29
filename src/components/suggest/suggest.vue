@@ -70,27 +70,33 @@
                 search(this.query, this.page, this.showSinger, perpage).then((res) => {
                     if (res.code === ERR_OK) {
                         this.result = this._genResult(res.data, true)
-                        this._checkLoading()
+                        this._checkLoading(res.data)
                     }
                 })
             },
             searchMore() {
+                console.log(this.isLoading)
+                if (!this.isLoading) {
+                    return
+                }
                 this.page++
                 search(this.query, this.page, this.showSinger, perpage).then((res) => {
                     if (res.code === ERR_OK) {
                         this.result = this.result.concat(this._genResult(res.data))
-                        this._checkLoading()
+                        this._checkLoading(res.data)
                     }
                 })
             },
-            _checkLoading() {
+            _checkLoading(data) {
                 const song = data.song
-                if (!song.list.length || (song.curnum + song.curpage*perpage) > song.totalnum) {
+                if (!song.list.length || (song.curnum + (song.curpage-1)*perpage) > song.totalnum) {
                     this.isLoading = false
                 }
             },
             _genResult(data, pushSinger) {
                 let ret = []
+                // pushSinger 只保留第一次请求到的歌手信息
+                // 原项目中存在bug，没有清除重复的歌手数据
                 if (data.zhida && data.zhida.singerid && pushSinger) {
                     data.zhida.image = `https://y.gtimg.cn/music/photo_new/T001R300x300M000${data.zhida.singermid}.jpg?max_age=259200`
                     // ES6 扩展运算符

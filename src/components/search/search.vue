@@ -100,7 +100,7 @@
                             left -20px
                             bottom -10px
                             right -20px
-                            border-radius 35                                    px
+                            border-radius 35px
                             border 1px solid $color-background-s
                             transform scale(.6)
         .search-result
