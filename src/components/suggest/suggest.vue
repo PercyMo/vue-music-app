@@ -27,7 +27,7 @@
             </ul>
             <loading v-show="isLoading"></loading>
             <div v-show="!isLoading && !result.length" class="no-result-wrapper">
-                
+                <no-result title="抱歉，暂无搜索结果"></no-result>
             </div>
         </div>
     </scroll>
@@ -36,6 +36,7 @@
 <script type="text/ecmascript-6">
     import Scroll from 'base/scroll/scroll'
     import Loading from 'base/loading/loading'
+    import NoResult from 'base/no-result/no-result'
     import {search} from 'api/search'
     import {ERR_OK} from 'api/config'
     import {createSong} from 'common/js/song'
@@ -133,7 +134,8 @@
         },
         components: {
             Scroll,
-            Loading
+            Loading,
+            NoResult
         }
     }
 </script>
