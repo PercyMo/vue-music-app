@@ -56,3 +56,25 @@ export function getSongList(disstid) {
         return Promise.resolve(res.data)
     })
 }
+
+export function getMvList() {
+    const url = 'https://c.y.qq.com/v8/fcg-bin/getmv_by_tag'
+
+    const data = Object.assign({}, commonParams, {
+        platform: 'yqq',
+        hostUin: 0,
+        loginUin: 0,
+        needNewCode: 0,
+        utf8: 1,
+        type: 2,
+        year: 0,
+        area: 0,
+        tag: 0,
+        pageno: 0,
+        pagecount: 4,
+        otype: 'json',
+        taglist: 1
+    })
+
+    return jsonp(url, data, options)
+}
