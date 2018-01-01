@@ -1,6 +1,6 @@
 <template>
     <div class="recommend" ref="recommend">
-        <scroll ref="scroll" class="recommend-content" :data="discList">
+        <scroll ref="scroll" class="recommend-content" :data="dataList">
             <div>
                 <div class="slider-wrapper" v-if="recommends.length" ref="sliderWrapper">
                     <slider>
@@ -12,18 +12,30 @@
                     </slider>
                 </div>
                 <div class="recommend-list">
-                    <h1 class="list-title">热门歌单推荐</h1>
-                    <ul>
-                        <li v-for="item in discList" class="recommend-item" @click="selectItem(item)" :key="item.dissid">
+                    <h1 class="list-title">
+                        推荐歌单
+                    </h1>
+                    <ul class="recommend-sheet">
+                        <li v-for="item in discList" class="item" @click="selectItem(item)" :key="item.dissid">
                             <div class="icon">
-                                <img v-lazy="item.imgurl" width="60" height="60">
+                                <img v-lazy="item.imgurl" width="100%" height="auto">
                             </div>
-                            <div class="text">
-                                <h2 class="name" v-html="item.creator.name"></h2>
-                                <p class="desc" v-html="item.dissname"></p>
-                            </div>
+                            <p class="desc" v-html="item.dissname"></p>
                         </li>
                     </ul>
+                    <template v-if="discList.length">
+                        <h1 class="list-title">
+                            推荐MV
+                        </h1>
+                        <ul class="recommend-mv">
+                            <li v-for="item in mvList" class="item" :key="item.dissid">
+                                <div class="icon">
+                                    <img v-lazy="item.picurl" width="100%" height="auto">
+                                </div>
+                                <p class="desc" v-html="item.dissname"></p>
+                            </li>
+                        </ul>
+                    </template>
                 </div>
             </div>
             <div class="loading-container" v-if="!discList.length">
@@ -38,7 +50,7 @@
     import Slider from 'base/slider/slider'
     import Loading from 'base/loading/loading'
     import Scroll from 'base/scroll/scroll'
-    import {getRecommend, getDiscList} from 'api/recommend'
+    import {getRecommend, getDiscList, getMvList} from 'api/recommend'
     import {ERR_OK} from 'api/config'
     import {playlistMixin} from 'common/js/mixin'
     import {mapMutations} from 'vuex'
@@ -48,12 +60,19 @@
         data() {
             return {
                 recommends: [],
-                discList: []
+                discList: [],
+                mvList: []
+            }
+        },
+        computed: {
+            dataList() {
+                return this.mvList.length ? this.mvList : this.discList
             }
         },
         created() {
             this._getRecommend()
             this._getDiscList()
+            this._getMvList()
         },
         methods: {
             handlePlaylist(playlist) {
@@ -72,7 +91,14 @@
             _getDiscList() {
                 getDiscList().then((res) => {
                     if (res.code === ERR_OK) {
-                        this.discList = res.data.list
+                        this.discList = res.data.list.slice(0, 6)
+                    }
+                })
+            },
+            _getMvList() {
+                getMvList().then((res) => {
+                    if (res.code === ERR_OK) {
+                        this.mvList = res.data.mvlist
                     }
                 })
             },
@@ -112,35 +138,43 @@
             height 100%
             overflow hidden
             .recommend-list
+                padding-top 25px
                 .list-title
-                    height 65px
-                    line-height 65px
-                    color $color-theme
-                    font-size $font-size-medium
-                    text-align center
-                .recommend-item
-                    padding 0 20px 20px
-                    display flex
-                    align-items center
-                    justify-content center
-                    box-sizing border-box
-                    .icon
-                        padding-right 20px
-                        width 60px
-                        display flex
-                        flex-direction column
-                        flex 0 0 60px
-                        img
-                            background #fff
-                    .text
-                        flex 1
-                        line-height 20px
-                        .name
-                            margin-bottom: 6px
-                            color $color-text
-                            font-size $font-size-medium
+                    margin-bottom 15px
+                    padding-left 6px
+                    height 15px
+                    line-height 1
+                    font-size $font-size-medium-x
+                    border-left 2px solid $color-theme
+                .recommend-sheet
+                    margin 0 -1px 30px
+                    overflow hidden
+                    .item
+                        padding 0 1px 7px
+                        width 33.33%
+                        float left
+                        box-sizing border-box
+                        .icon
+                            img
+                                display block
+                                background $color-background-w
                         .desc
-                            color $color-text-d
+                            display -webkit-box
+                            -webkit-box-orient vertical
+                            -webkit-line-clamp 2
+                            height 32px
+                            margin 5px
                             font-size $font-size-small
-            
+                            line-height 16px
+                            overflow hidden
+                            text-overflow ellipsis            
+                .recommend-mv
+                    margin 0 -1px 30px
+                    overflow hidden
+                    .item
+                        padding 0 1px 7px
+                        width 50%
+                        float left
+                        box-sizing border-box
+                        
 </style>
