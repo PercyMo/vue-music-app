@@ -1,5 +1,6 @@
 <template>
     <scroll class="suggest"
+            ref="suggest"
             :data="result"
             :pullup="pullup"
             @scrollToEnd="searchMore">
@@ -76,7 +77,6 @@
                 })
             },
             searchMore() {
-                console.log(this.isLoading)
                 if (!this.isLoading) {
                     return
                 }
@@ -90,7 +90,7 @@
             },
             _checkLoading(data) {
                 const song = data.song
-                if (!song.list.length || (song.curnum + (song.curpage-1)*perpage) > song.totalnum) {
+                if (!song.list.length || (song.curnum + song.curpage * perpage) > song.totalnum) {
                     this.isLoading = false
                 }
             },
@@ -148,7 +148,7 @@
         height 100%
         overflow hidden
         .title
-            margin 10px
+            padding 10px
             color $color-text-ll
             font-size $font-size-small
         .suggest-list
@@ -183,5 +183,5 @@
                         font-size $font-size-small
                         no-wrap()
         .loading
-            margin-top 10px
+            padding 10px 0
 </style>

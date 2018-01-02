@@ -1,6 +1,6 @@
 <template>
     <div class="recommend" ref="recommend">
-        <scroll ref="scroll" class="recommend-content" :data="dataList">
+        <scroll ref="scroll" class="recommend-content" :data="mvList">
             <div>
                 <div class="slider-wrapper" v-if="recommends.length" ref="sliderWrapper">
                     <slider>
@@ -30,7 +30,7 @@
                         <ul class="recommend-mv">
                             <li v-for="item in mvList" class="item" :key="item.dissid">
                                 <div class="icon">
-                                    <img v-lazy="item.picurl" width="100%" height="auto">
+                                    <img v-lazy="item.picObj" width="100%" height="auto">
                                 </div>
                                 <p class="desc" v-html="item.dissname"></p>
                             </li>
@@ -54,6 +54,7 @@
     import {ERR_OK} from 'api/config'
     import {playlistMixin} from 'common/js/mixin'
     import {mapMutations} from 'vuex'
+    import ImgDefault from 'common/image/mv.png'
     
     export default {
         mixins: [playlistMixin],
@@ -64,15 +65,9 @@
                 mvList: []
             }
         },
-        computed: {
-            dataList() {
-                return this.mvList.length ? this.mvList : this.discList
-            }
-        },
         created() {
             this._getRecommend()
             this._getDiscList()
-            this._getMvList()
         },
         methods: {
             handlePlaylist(playlist) {
@@ -92,12 +87,19 @@
                 getDiscList().then((res) => {
                     if (res.code === ERR_OK) {
                         this.discList = res.data.list.slice(0, 6)
+                        this._getMvList()
                     }
                 })
             },
             _getMvList() {
                 getMvList().then((res) => {
                     if (res.code === ERR_OK) {
+                        res.data.mvlist.forEach((i) => {
+                            i.picObj = {
+                                src: i.picurl,
+                                loading: ImgDefault
+                            }
+                        })
                         this.mvList = res.data.mvlist
                     }
                 })
@@ -167,7 +169,7 @@
                             font-size $font-size-small
                             line-height 16px
                             overflow hidden
-                            text-overflow ellipsis            
+                            text-overflow ellipsis
                 .recommend-mv
                     margin 0 -1px 30px
                     overflow hidden
@@ -176,5 +178,4 @@
                         width 50%
                         float left
                         box-sizing border-box
-                        
 </style>
