@@ -65,9 +65,10 @@
                 isLoading: true
             }
         },
-        created() {
-        },
         methods: {
+            refresh() {
+                this.$refs.suggest.refresh()
+            },
             search() {
                 this.page = 1
                 this.isLoading = true

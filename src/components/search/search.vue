@@ -20,7 +20,7 @@
                 </div>
             </scroll>
         </div>
-        <div class="search-result" v-show="query" ref="search-result">
+        <div class="search-result" v-show="query" ref="searchResult">
             <suggest ref="suggest" :query="query"></suggest>
         </div>
         <router-view></router-view>
@@ -33,8 +33,10 @@
     import Scroll from 'base/scroll/scroll'
     import {getHotKey} from 'api/search'
     import {ERR_OK} from 'api/config'
+    import {playlistMixin} from 'common/js/mixin'
 
     export default {
+        mixins: [playlistMixin],
         data() {
             return {
                 hotKey: [],
@@ -45,6 +47,14 @@
             this._getHotkey()
         },
         methods: {
+            handlePlaylist(playlist) {
+                const bottom = playlist.length > 0 ? '50px' : ''
+                this.$refs.shortcutWrapper.style.bottom = bottom
+                this.$refs.shortcut.refresh()
+
+                this.$refs.searchResult.style.bottom = bottom
+                this.$refs.suggest.refresh()
+            },
             _getHotkey() {
                 getHotKey().then((res) => {
                     if (res.code === ERR_OK) {

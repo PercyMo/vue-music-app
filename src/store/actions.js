@@ -39,6 +39,36 @@ export const insertSong = function ({commit, state}, song) {
     let currentIndex = state.currentIndex
     let currentSong = playlist[currentIndex]
 
+    let fpIndex = findIndex(playlist, song)
+    // 新插入位置从1计算，所以加1
+    currentIndex++
+    playlist.splice(currentIndex, 0, song)
+    // 如果已经包含了这首歌
+    // 调整播放列表，及当前位置
+    if (fpIndex > -1) {
+        if (currentIndex > fpIndex) {
+            playlist.splice(fpIndex, 1)
+            currentIndex--
+        } else {
+            playlist.splice(fpIndex + 1, 1)
+        }
+    }
+
+    // 调整顺序列表，及当前位置
+    let currentSIndex = findIndex(sequenceList, currentSong) + 1
+    let fsIndex = findIndex(sequenceList, song)
+    sequenceList.splice(currentSIndex, 0, song)
+    if (fsIndex > -1) {
+        if (currentSIndex > fsIndex) {
+            sequenceList.splice(fsIndex, 1)
+        } else {
+            sequenceList.splice(fsIndex + 1, 1)
+        }
+    }
+
+    commit(types.SET_PLAYLIST, playlist)
+    commit(types.SET_SEQUENCE_LIST, sequenceList)
+    commit(types.SET_CURRENT_INDEX, currentIndex)
     commit(types.SET_FULL_SCREEN, true)
     commit(types.SET_PLAYING_STATE, true)
 }
