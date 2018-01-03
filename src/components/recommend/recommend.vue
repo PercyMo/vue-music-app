@@ -18,6 +18,10 @@
                     <ul class="recommend-sheet">
                         <li v-for="item in discList" class="item" @click="selectItem(item)" :key="item.dissid">
                             <div class="icon">
+                                <span v-if="item.listennum" class="num">
+                                    <i class="icon-listen"></i>
+                                    {{getNum(item.listennum)}}
+                                </span>
                                 <img v-lazy="item.imgurl" width="100%" height="auto">
                             </div>
                             <p class="desc" v-html="item.dissname"></p>
@@ -30,9 +34,16 @@
                         <ul class="recommend-mv">
                             <li v-for="item in mvList" class="item" :key="item.dissid">
                                 <div class="icon">
+                                    <span v-if="item.listennum" class="num">
+                                        <i class="icon-mv"></i>
+                                        {{getNum(item.listennum)}}
+                                    </span>
                                     <img v-lazy="item.picObj" width="100%" height="auto">
                                 </div>
-                                <p class="desc" v-html="item.dissname"></p>
+                                <div class="text">
+                                    <p class="desc" v-html="item.mvtitle"></p>
+                                    <p class="name" v-html="item.singername"></p>
+                                </div>
                             </li>
                         </ul>
                     </template>
@@ -104,6 +115,16 @@
                     }
                 })
             },
+            getNum(num) {
+                if (!num) return 0
+
+                let format = num / 10000
+                if (format > 0) {
+                    return parseInt(format) + '万'
+                } else {
+                    return num
+                }
+            },
             loadImage() {
                 if (!this.checkloaded) {
                     this.checkloaded = true
@@ -130,6 +151,7 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
     @import "~common/stylus/variable"
+    @import "~common/stylus/mixin"
     
     .recommend
         position fixed
@@ -141,6 +163,20 @@
             overflow hidden
             .recommend-list
                 padding-top 25px
+                .icon
+                    position relative
+                    .num
+                        position absolute
+                        top 5px
+                        right 3px
+                        color $color-text-w
+                        font-size $font-size-small
+                        transform scale(0.9)
+                        .icon-mv
+                            font-weight bold
+                    img
+                        display block
+                        background $color-background-w
                 .list-title
                     margin-bottom 15px
                     padding-left 6px
@@ -156,10 +192,6 @@
                         width 33.33%
                         float left
                         box-sizing border-box
-                        .icon
-                            img
-                                display block
-                                background $color-background-w
                         .desc
                             display -webkit-box
                             -webkit-box-orient vertical
@@ -178,4 +210,13 @@
                         width 50%
                         float left
                         box-sizing border-box
+                        .text
+                            margin 5px
+                            .desc
+                                margin-bottom 3px
+                                font-size 13px
+                                no-wrap()
+                            .name
+                                font-size $font-size-small
+                                color $color-text-l
 </style>

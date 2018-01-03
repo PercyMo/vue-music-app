@@ -7,7 +7,7 @@
         <div>
             <h1 class="title" v-if="result.length">最佳匹配</h1>
             <ul class="suggest-list">
-                <li class="suggest-item" v-for="item in result">
+                <li @click="selectItem(item)" class="suggest-item" v-for="item in result">
                     <template v-if="item.type === 'singer'">
                         <div class="singer-box">
                             <div class="pic">
@@ -41,6 +41,8 @@
     import {search} from 'api/search'
     import {ERR_OK} from 'api/config'
     import {createSong} from 'common/js/song'
+    import {mapMutations, mapActions} from 'vuex'
+    import Singer from 'common/js/singer'
 
     const TYPE_SINGER = 'singer'
     const perpage = 20
@@ -88,6 +90,20 @@
                     }
                 })
             },
+            selectItem(item) {
+                if (item.type === TYPE_SINGER) {
+                    const singer = new Singer({
+                        name: item.singername,
+                        id: item.singermid
+                    })
+                    this.$router.push({
+                        path: `/search/${singer.id}`
+                    })
+                    this.setSinger(singer)
+                } else {
+                    this.insertSong(item)
+                }
+            },
             _checkLoading(data) {
                 const song = data.song
                 if (!song.list.length || (song.curnum + song.curpage * perpage) > song.totalnum) {
@@ -125,7 +141,13 @@
                 const str1 = this.query
                 const str2 = `<em>${str1}</em>`
                 return str.replace(new RegExp(`${str1}`, 'g'), str2)
-            }
+            },
+            ...mapMutations({
+                setSinger: 'SET_SINGER'
+            }),
+            ...mapActions([
+                'insertSong'
+            ])
         },
         watch: {
             query(newQuery) {
