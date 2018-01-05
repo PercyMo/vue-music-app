@@ -21,6 +21,10 @@
                 type: Boolean,
                 default: false
             },
+            beforeScroll: {
+                type: Boolean,
+                default: false
+            },
             data: {
                 type: Array,
                 default: null
@@ -58,6 +62,12 @@
                     let _this = this
                     this.scroll.on('scroll', (pos) => {
                         _this.$emit('scroll', pos)
+                    })
+                }
+
+                if (this.beforeScroll) {
+                    this.scroll.on('beforeScrollStart', () => {
+                        this.$emit('beforeScroll')
                     })
                 }
 

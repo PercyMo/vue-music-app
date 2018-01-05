@@ -21,7 +21,7 @@
             </scroll>
         </div>
         <div class="search-result" v-show="query" ref="searchResult">
-            <suggest ref="suggest" :query="query"></suggest>
+            <suggest ref="suggest" :query="query" @listenScroll="blurInput"></suggest>
         </div>
         <router-view></router-view>
     </div>
@@ -58,7 +58,11 @@
             _getHotkey() {
                 getHotKey().then((res) => {
                     if (res.code === ERR_OK) {
-                        this.hotKey = res.data.hotkey.slice(0, 10)
+                        let result = res.data.hotkey.slice(0, 10)
+                        result.forEach((item) => {
+                            item.k = item.k.replace(/(\s|\u00A0)+$/, '')
+                        })
+                        this.hotKey = result
                     }
                 })
             },
@@ -67,6 +71,9 @@
             },
             addQuery(query) {
                 this.$refs.searchBox.setQuery(query)
+            },
+            blurInput() {
+                this.$refs.searchBox.blur()
             }
         },
         components: {

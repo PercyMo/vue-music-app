@@ -3,6 +3,8 @@
             ref="suggest"
             :data="result"
             :pullup="pullup"
+            :beforeScroll="beforeScroll"
+            @beforeScroll="listenScroll"
             @scrollToEnd="searchMore">
         <div>
             <h1 class="title" v-if="result.length">最佳匹配</h1>
@@ -27,9 +29,9 @@
                 </li>
             </ul>
             <loading v-show="isLoading"></loading>
-            <div v-show="!isLoading && !result.length" class="no-result-wrapper">
-                <no-result title="抱歉，暂无搜索结果"></no-result>
-            </div>
+        </div>
+        <div v-show="!isLoading && !result.length" class="no-result-wrapper">
+            <no-result title="抱歉，暂无搜索结果"></no-result>
         </div>
     </scroll>
 </template>
@@ -62,7 +64,8 @@
             return {
                 pullup: true,
                 result: [],
-                isLoading: true
+                isLoading: true,
+                beforeScroll: true
             }
         },
         methods: {
@@ -104,6 +107,9 @@
                 } else {
                     this.insertSong(item)
                 }
+            },
+            listenScroll() {
+                this.$emit('listenScroll')
             },
             _checkLoading(data) {
                 const song = data.song
@@ -169,6 +175,7 @@
     
     .suggest
         height 100%
+        position: relative
         overflow hidden
         .title
             padding 10px
@@ -207,4 +214,9 @@
                         no-wrap()
         .loading
             padding 10px 0
+        .no-result-wrapper
+            width 100%
+            position absolute
+            top 40%
+            transform translateY(-50%)
 </style>

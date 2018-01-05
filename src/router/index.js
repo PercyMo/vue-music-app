@@ -5,6 +5,7 @@ Vue.use(Router)
 
 import Recommend from 'components/recommend/recommend'
 import Disc from 'components/disc/disc'
+import MvDetail from 'components/mv-detail/mv-detail'
 import Singer from 'components/singer/singer'
 import SingerDetail from 'components/singer-detail/singer-detail'
 import Rank from 'components/rank/rank'
@@ -26,6 +27,10 @@ export default new Router({
                     component: Disc
                 }
             ]
+        },
+        {
+            path: '/mvdetail',
+            component: MvDetail
         },
         {
             path: '/singer',

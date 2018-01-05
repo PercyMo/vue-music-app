@@ -32,7 +32,7 @@
                             推荐MV
                         </h1>
                         <ul class="recommend-mv">
-                            <li v-for="item in mvList" class="item" :key="item.dissid">
+                            <li v-for="item in mvList" class="item" :key="item.dissid" @click="selectMv()">
                                 <div class="icon">
                                     <span v-if="item.listennum" class="num">
                                         <i class="icon-mv"></i>
@@ -136,6 +136,11 @@
                     path: `/recommend/${item.dissid}`
                 })
                 this.setDisc(item)
+            },
+            selectMv() {
+                this.$router.push({
+                    path: '/mvdetail'
+                })
             },
             ...mapMutations({
                 setDisc: 'SET_DISC'
