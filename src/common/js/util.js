@@ -15,7 +15,6 @@ export function shuffle(arr) {
 export function debounce(func, delay) {
     let timer
 
-    // 扩展运算符
     return function (...args) {
         if (timer) {
             clearTimeout(timer)
