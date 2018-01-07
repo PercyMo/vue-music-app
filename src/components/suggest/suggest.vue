@@ -123,7 +123,6 @@
                 // 原项目中存在bug，没有清除重复的歌手数据
                 if (data.zhida && data.zhida.singerid && pushSinger) {
                     data.zhida.image = `https://y.gtimg.cn/music/photo_new/T001R300x300M000${data.zhida.singermid}.jpg?max_age=259200`
-                    // ES6 扩展运算符
                     ret.push({...data.zhida, ...{type: TYPE_SINGER}})
                 }
                 if (data.song) {
