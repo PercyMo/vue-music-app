@@ -23,3 +23,6 @@ export const currentSong = (state) => {
 
 // 排行榜
 export const topList = state => state.topList
+
+// 搜索
+export const searchHistory = state => state.searchHistory
