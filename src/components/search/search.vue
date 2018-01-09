@@ -15,7 +15,13 @@
                         </ul>
                     </div>
                     <div class="search-history">
-                        <h1 class="title">搜索历史</h1>
+                        <h1 class="title">
+                            <span class="text">搜索历史</span>
+                            <span class="clear">
+                                <i class="icon-empty"></i>
+                            </span>
+                        </h1>
+                        <search-list :searches="searchHistory" @select="addQuery"></search-list>
                     </div>
                 </div>
             </scroll>
@@ -29,12 +35,13 @@
 
 <script type="text/ecmascript-6">
     import SearchBox from 'base/search-box/search-box'
+    import SearchList from 'base/search-list/search-list'
     import Suggest from 'components/suggest/suggest'
     import Scroll from 'base/scroll/scroll'
     import {getHotKey} from 'api/search'
     import {ERR_OK} from 'api/config'
     import {playlistMixin} from 'common/js/mixin'
-    import {mapActions} from 'vuex'
+    import {mapGetters, mapActions} from 'vuex'
 
     export default {
         mixins: [playlistMixin],
@@ -43,6 +50,11 @@
                 hotKey: [],
                 query: ''
             }
+        },
+        computed: {
+            ...mapGetters([
+                'searchHistory'
+            ])
         },
         created() {
             this._getHotkey()
@@ -85,6 +97,7 @@
         },
         components: {
             SearchBox,
+            SearchList,
             Suggest,
             Scroll
         }
@@ -95,6 +108,18 @@
     @import "~common/stylus/variable"
     
     .search
+        .title
+            margin-bottom 15px
+            display flex
+            color $color-text-ll
+            font-size $font-size-small
+            .text
+                flex 1
+            .icon-empty
+                margin-right 10px
+                color $color-text-l
+                font-size $font-size-medium
+                font-weight bold
         .search-box-wrapper
             margin 20px
         .shortcut-wrapper
@@ -107,10 +132,6 @@
                 overflow hidden
                 .hot-key
                     margin 0 10px 20px
-                    .title
-                        margin-bottom 10px
-                        color $color-text-ll
-                        font-size $font-size-small
                     .key-item
                         margin 0 10px 10px 0
                         padding 6px 12px
@@ -118,16 +139,11 @@
                         color $color-text
                         font-size $font-size-medium
                         position relative
-                        &:after
-                            content ''
-                            position absolute
-                            top -10px
-                            left -20px
-                            bottom -10px
-                            right -20px
-                            border-radius 35px
-                            border 1px solid $color-background-s
-                            transform scale(.6)
+                        background $color-background-s
+                        border-radius 15px
+                .search-history
+                    .title
+                        margin 0 10px 5px
         .search-result
             position fixed
             width 100%
