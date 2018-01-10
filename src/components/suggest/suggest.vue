@@ -178,6 +178,7 @@
         position: relative
         overflow hidden
         .title
+            margin-bottom 0
             padding 10px
             color $color-text-ll
             font-size $font-size-small

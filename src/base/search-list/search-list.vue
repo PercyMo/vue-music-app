@@ -7,7 +7,7 @@
                 </span>
                 <div class="text">
                     <span class="key">{{item}}</span>
-                    <span class="icon-r">
+                    <span class="icon-r" @click.stop="deleteOne(item)">
                         <i class="icon-close"></i>
                     </span>
                 </div>
@@ -27,6 +27,9 @@
         methods: {
             selectItem(item) {
                 this.$emit('select', item)
+            },
+            deleteOne(item) {
+                this.$emit('delete', item)
             }
         }
     }
