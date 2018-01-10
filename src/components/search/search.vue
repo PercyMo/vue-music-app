@@ -14,7 +14,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="search-history">
+                    <div class="search-history" v-show="searchHistory.length">
                         <h1 class="title">
                             <span class="text">搜索历史</span>
                             <span @click="showConfirm" class="clear">
@@ -29,7 +29,7 @@
         <div class="search-result" v-show="query" ref="searchResult">
             <suggest ref="suggest" :query="query" @listenScroll="blurInput" @select="saveSearch"></suggest>
         </div>
-        <confirm ref="confirm" text="确定要清空搜索历史？" confirmBtnText="清空"></confirm>
+        <confirm ref="confirm" @confirm="clearSearchHistory" text="确定要清空搜索历史？" confirmBtnText="清空"></confirm>
         <router-view></router-view>
     </div>
 </template>
@@ -98,7 +98,8 @@
             },
             ...mapActions([
                 'saveSearchHistory',
-                'deleteSearchHistory'
+                'deleteSearchHistory',
+                'clearSearchHistory'
             ])
         },
         components: {
