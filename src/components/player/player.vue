@@ -93,11 +93,12 @@
                         <i @click.stop.prevent="togglePlaying" class="icon-mini" :class="miniIcon"></i>
                     </progress-circle>
                 </div>
-                <div class="control">
+                <div class="control" @click.stop="showPlayList">
                     <i class="icon-playlist"></i>
                 </div>
             </div>
         </transition>
+        <playlist ref="playlist"></playlist>
         <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="timeupdate" @ended="end"></audio>
     </div>
 </template>
@@ -106,6 +107,7 @@
     import {mapGetters, mapMutations} from 'vuex'
     import ProgressBar from 'base/progress-bar/progress-bar'
     import ProgressCircle from 'base/progress-circle/progress-circle'
+    import Playlist from 'components/playlist/playlist'
     import Velocity from 'velocity-animate'
     import {prefixStyle} from 'common/js/dom'
     import {playMode} from 'common/js/config'
@@ -301,6 +303,9 @@
                 }
                 this.playingLyric = txt
             },
+            showPlayList() {
+                this.$refs.playlist.show()
+            },
             middleTouchStart(e) {
                 this.touch.initiated = true
                 this.touch.move = false
@@ -440,7 +445,8 @@
         components: {
             ProgressBar,
             ProgressCircle,
-            Scroll
+            Scroll,
+            Playlist
         }
     }
 </script>
