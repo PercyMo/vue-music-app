@@ -20,9 +20,9 @@
                     </div>
                 </div>
                 <ul class="list-content">
-                    <li class="item" v-for="(item, index) in sequenceList" :key="item.id">
+                    <li class="item" :class="{'current' : getCurrent(item)}" v-for="(item, index) in sequenceList" :key="item.id">
                         <div class="item-l">
-                            <i class="icon-voice"></i>
+                            <i class="icon-voice" v-if="getCurrent(item)"></i>
                             <span class="name">{{item.name}}</span>
                             <span class="singer">- {{item.singer}}</span>
                         </div>
@@ -55,7 +55,8 @@
         },
         computed: {
             ...mapGetters([
-              'sequenceList'
+              'sequenceList',
+              'currentSong'
             ])
         },
         created() {
@@ -66,6 +67,9 @@
             },
             hide() {
                 this.showFlag = false
+            },
+            getCurrent(item) {
+                return this.currentSong.id === item.id
             }
         }
     }
@@ -136,7 +140,7 @@
                     font-weight bold
                     vertical-align middle
             .list-content
-                padding-left 10px
+                padding 0 0 10px 10px
                 max-height 240px
                 overflow hidden
                 border-1px(rgba(7, 17, 27, 0.1))
@@ -146,8 +150,14 @@
                     color $color-text-ll
                     line-height 40px
                     border-1px(rgba(7, 17, 27, 0.1))
+                    &.current
+                        .item-l
+                            .icon-voice, .name, .singer
+                                color $color-theme
                     .item-l
+                        padding-right 30px
                         flex 1
+                        no-wrap()
                         .icon-voice
                             margin-right 3px
                             font-size $font-size-medium-x
@@ -164,7 +174,7 @@
                             font-size $font-size-medium-x
             .list-close
                 color $color-theme
-                font-size $font-size-medium = 14px
+                font-size $font-size-medium
                 line-height 40px
                 text-align center
 </style>
