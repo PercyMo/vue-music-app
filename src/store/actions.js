@@ -5,7 +5,7 @@ import {saveSearch, deleteSearch, clearSearch} from 'common/js/cache'
 
 function findIndex(list, song) {
     return list.findIndex((item) => {
-        item.id === song.id
+        return item.id === song.id
     })
 }
 
