@@ -409,7 +409,6 @@
                 }
             },
             test(newSong) {
-                console.log('执行')
                 getVkey(newSong.mid).then((res) => {
                     console.log(res)
                 })
