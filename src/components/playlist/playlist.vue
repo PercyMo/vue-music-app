@@ -5,8 +5,8 @@
                 <div class="list-heard">
                     <div class="heard-l">
                         <span class="mode">
-                            <i class="icon-random"></i>
-                            <span>随机播放 ( {{sequenceList.length}} )</span>
+                            <i :class="iconMode"></i>
+                            <span>{{modeText}} ( {{sequenceList.length}} )</span>
                         </span>
                     </div>
                     <div class="heard-r">
@@ -46,6 +46,7 @@
 
 <script type="text/ecmascript-6">
     import {mapGetters} from 'vuex'
+    import {playMode} from 'common/js/config'
 
     export default {
         data() {
@@ -54,9 +55,42 @@
             }
         },
         computed: {
+            iconMode() {
+                const type = this.mode
+                switch (type) {
+                    case playMode.sequence:
+                        return 'icon-loop_all'
+                        break
+                    case playMode.loop:
+                        return 'icon-loop_single'
+                        break
+                    case playMode.random:
+                        return 'icon-random'
+                        break
+                    default:
+                        break
+                }
+            },
+            modeText() {
+                const type = this.mode
+                switch (type) {
+                    case playMode.sequence:
+                        return '顺序播放'
+                        break
+                    case playMode.loop:
+                        return '单曲循环'
+                        break
+                    case playMode.random:
+                        return '随机播放'
+                        break
+                    default:
+                        break
+                }
+            },
             ...mapGetters([
               'sequenceList',
-              'currentSong'
+              'currentSong',
+              'mode'
             ])
         },
         created() {
