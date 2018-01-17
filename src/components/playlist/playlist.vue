@@ -12,7 +12,7 @@
                     <div class="heard-r">
                         <span class="add">
                             <i class="icon-add"></i>
-                            <!-- <span>添加到列队</span> -->
+                            <span>添加到列队</span>
                         </span>
                         <span class="empty">
                             <i class="icon-empty"></i>
