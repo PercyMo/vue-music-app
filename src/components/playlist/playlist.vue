@@ -19,23 +19,25 @@
                         </span>
                     </div>
                 </div>
-                <ul class="list-content">
-                    <li class="item" :class="{'current' : getCurrent(item)}" v-for="(item, index) in sequenceList" :key="item.id">
-                        <div class="item-l">
-                            <i class="icon-voice" v-if="getCurrent(item)"></i>
-                            <span class="name">{{item.name}}</span>
-                            <span class="singer">- {{item.singer}}</span>
-                        </div>
-                        <div class="item-r">
-                            <span class="like">
-                                <i class="icon-like_out"></i>
-                            </span>
-                            <span class="delete">
-                                <i class="icon-close"></i>
-                            </span>
-                        </div>
-                    </li>
-                </ul>
+                <scroll ref="listContent" :data="sequenceList" class="list-content">
+                    <ul ref="list">
+                        <li class="item" :class="{'current' : getCurrent(item)}" v-for="(item, index) in sequenceList" :key="item.id" @click="selectItem(item, index)">
+                            <div class="item-l">
+                                <i class="icon-voice" v-if="getCurrent(item)"></i>
+                                <span class="name">{{item.name}}</span>
+                                <span class="singer">- {{item.singer}}</span>
+                            </div>
+                            <div class="item-r">
+                                <span class="like">
+                                    <i class="icon-like_out"></i>
+                                </span>
+                                <span class="delete">
+                                    <i class="icon-close"></i>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </scroll>
                 <div class="list-close" @click="hide">
                     <span>关闭</span>
                 </div>
@@ -45,7 +47,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import {mapGetters} from 'vuex'
+    import Scroll from 'base/scroll/scroll'
+    import {mapGetters, mapMutations} from 'vuex'
     import {playMode} from 'common/js/config'
 
     export default {
@@ -89,6 +92,7 @@
             },
             ...mapGetters([
               'sequenceList',
+              'playlist',
               'currentSong',
               'mode'
             ])
@@ -98,13 +102,49 @@
         methods: {
             show() {
                 this.showFlag = true
+                setTimeout(() => {
+                    this.$refs.listContent.refresh()
+                    this._scrollToCurrent(this.currentSong)
+                }, 20)
             },
             hide() {
                 this.showFlag = false
             },
             getCurrent(item) {
                 return this.currentSong.id === item.id
+            },
+            selectItem(item, index) {
+                if (this.mode === playMode.random) {
+                    index = this.playlist.findIndex((song) => {
+                        return song.id === item.id
+                    })
+                }
+                this.setCurrentIndex(index)
+                this.setPlayingState(true)
+            },
+            _scrollToCurrent(current) {
+                const index = this.sequenceList.findIndex((song) => {
+                    return song.id === current.id
+                })
+                this.$refs.listContent.scrollToElement(this.$refs.list.children[index], 300)
+            },
+            ...mapMutations({
+                setCurrentIndex: 'SET_CURRENT_INDEX',
+                setPlayingState: 'SET_PLAYING_STATE'
+            })
+        },
+        watch: {
+            currentSong(newSong, oldSong) {
+                if (!this.showFlag || oldSong.id === newSong.id) {
+                    return
+                }
+                setTimeout(() => {
+                    this._scrollToCurrent(newSong)
+                }, 20)
             }
+        },
+        components: {
+            Scroll
         }
     }
 </script>
