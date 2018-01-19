@@ -408,11 +408,6 @@
                     scale
                 }
             },
-            test(newSong) {
-                getVkey(newSong.mid).then((res) => {
-                    console.log(res)
-                })
-            },
             ...mapMutations({
                 setFullScreen: 'SET_FULL_SCREEN',
                 setPlayingState: 'SET_PLAYING_STATE',
@@ -435,15 +430,11 @@
                     this.playingLyric = ''
                     this.currentLineNum = 0
                 }
-                this.test(newSong)
-                // getVkey(newSong.mid).then((res) => {
-                //     console.log(res)
-                // })
-                // clearTimeout(this.timer)
-                // this.timer = setTimeout(() => {
-                //     this.$refs.audio.play()
-                //     this.getLyric()
-                // }, 1000)
+                clearTimeout(this.timer)
+                this.timer = setTimeout(() => {
+                    this.$refs.audio.play()
+                    this.getLyric()
+                }, 1000)
             },
             playing(newPlaying) {
                 const audio = this.$refs.audio
