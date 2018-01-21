@@ -4,7 +4,7 @@
             <div class="list-wrapper" @click.stop>
                 <div class="list-heard">
                     <div class="heard-l">
-                        <span class="mode">
+                        <span class="mode" @click="changeMode">
                             <i :class="iconMode"></i>
                             <span>{{modeText}} ( {{sequenceList.length}} )</span>
                         </span>
@@ -14,13 +14,13 @@
                             <i class="icon-add"></i>
                             <span>添加到列队</span>
                         </span>
-                        <span class="empty">
+                        <span class="empty" @click="showConfirm">
                             <i class="icon-empty"></i>
                         </span>
                     </div>
                 </div>
-                <scroll ref="listContent" :data="sequenceList" class="list-content">
-                    <ul ref="list">
+                <scroll ref="listContent" :data="sequenceList" class="list-content" :refreshDelay="refreshDelay">
+                    <transition-group ref="list" name="list" tag="ul">
                         <li class="item" :class="{'current' : getCurrent(item)}" v-for="(item, index) in sequenceList" :key="item.id" @click="selectItem(item, index)">
                             <div class="item-l">
                                 <i class="icon-voice" v-if="getCurrent(item)"></i>
@@ -36,12 +36,13 @@
                                 </span>
                             </div>
                         </li>
-                    </ul>
+                    </transition-group>
                 </scroll>
                 <div class="list-close" @click="hide">
                     <span>关闭</span>
                 </div>
             </div>
+            <confirm ref="confirm" @confirm="deleteSongList" text="是否清空播放列表？" confirmBtnText="清空"></confirm>
         </div>
     </transition>
 </template>
@@ -50,11 +51,15 @@
     import Scroll from 'base/scroll/scroll'
     import {mapGetters, mapMutations, mapActions} from 'vuex'
     import {playMode} from 'common/js/config'
+    import {playerMixin} from 'common/js/mixin'
+    import Confirm from 'base/confirm/confirm'
 
     export default {
+        mixins: [playerMixin],
         data() {
             return {
-                showFlag: false
+                showFlag: false,
+                refreshDelay: 120
             }
         },
         computed: {
@@ -92,9 +97,7 @@
             },
             ...mapGetters([
               'sequenceList',
-              'playlist',
-              'currentSong',
-              'mode'
+              'playlist'
             ])
         },
         created() {
@@ -123,21 +126,30 @@
                 this.setPlayingState(true)
             },
             deleteOne(item) {
-                console.log(item)
                 this.deleteSong(item)
+                if (!this.sequenceList.length) {
+                    this.hide()
+                }
+            },
+            showConfirm() {
+                this.$refs.confirm.show()
+            },
+            deleteSongList() {
+                this.deleteSongList()
+                this.hide()
             },
             _scrollToCurrent(current) {
                 const index = this.sequenceList.findIndex((song) => {
                     return song.id === current.id
                 })
-                this.$refs.listContent.scrollToElement(this.$refs.list.children[index], 300)
+                this.$refs.listContent.scrollToElement(this.$refs.list.$el.children[index], 300)
             },
             ...mapMutations({
-                setCurrentIndex: 'SET_CURRENT_INDEX',
                 setPlayingState: 'SET_PLAYING_STATE'
             }),
             ...mapActions([
-                'deleteSong'
+                'deleteSong',
+                'deleteSongList'
             ])
         },
         watch: {
@@ -151,7 +163,8 @@
             }
         },
         components: {
-            Scroll
+            Scroll,
+            Confirm
         }
     }
 </script>
@@ -221,7 +234,8 @@
                     font-weight bold
                     vertical-align middle
             .list-content
-                padding 0 0 10px 10px
+                // padding 0 0 10px 10px
+                padding-left 10px
                 max-height 240px
                 overflow hidden
                 border-1px(rgba(7, 17, 27, 0.1))
@@ -230,7 +244,12 @@
                     display flex
                     color $color-text-ll
                     line-height 40px
+                    overflow hidden
                     border-1px(rgba(7, 17, 27, 0.1))
+                    &.list-enter-active, &.list-leave-active
+                        transition all 0.1s
+                    &.list-enter, &.list-leave-to
+                        height 0
                     &.current
                         .item-l
                             .icon-voice, .name, .singer

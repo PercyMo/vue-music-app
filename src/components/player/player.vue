@@ -111,7 +111,7 @@
     import Velocity from 'velocity-animate'
     import {prefixStyle} from 'common/js/dom'
     import {playMode} from 'common/js/config'
-    import {shuffle} from 'common/js/util'
+    import {playerMixin} from 'common/js/mixin'
     import Lyric from 'common/js/lyric-parser'
     import Scroll from 'base/scroll/scroll'
     import {getVkey} from 'api/song'
@@ -120,6 +120,7 @@
     const transitionDuration = prefixStyle('transitionDuration')
 
     export default {
+        mixins: [playerMixin],
         data() {
             return {
                 songReady: false,
@@ -138,22 +139,6 @@
             miniIcon() {
                 return this.playing ? 'icon-mini-stop' : 'icon-mini-play'
             },
-            iconMode() {
-                const type = this.mode
-                switch (type) {
-                    case playMode.sequence:
-                        return 'icon-loop_all'
-                        break
-                    case playMode.loop:
-                        return 'icon-loop_single'
-                        break
-                    case playMode.random:
-                        return 'icon-random'
-                        break
-                    default:
-                        break
-                }
-            },
             cdCls() {
                 return this.playing ? 'play' : 'play pause'
             },
@@ -168,9 +153,7 @@
                 'playlist',
                 'sequenceList',
                 'currentIndex',
-                'currentSong',
-                'playing',
-                'mode'
+                'playing'
             ])
         },
         created() {
@@ -367,24 +350,6 @@
                 this.$refs.middleL.style.opacity = opacity
                 this.touch.initiated = false
             },
-            changeMode() {
-                const mode = (this.mode + 1) % 3
-                this.setPlayMode(mode)
-                let list = []
-                if (this.mode === playMode.random) {
-                    list = shuffle(this.sequenceList)
-                } else {
-                    list = this.sequenceList
-                }
-                this._resetCurrentIndex(list)
-                this.setPlayList(list)
-            },
-            _resetCurrentIndex(list) {
-                let index = list.findIndex((item) => {
-                    return item.id === this.currentSong.id
-                })
-                this.setCurrentIndex(index)
-            },
             _pad(num, n = 2) {
                 let len = num.toString().length
                 while (len < n) {
@@ -410,10 +375,7 @@
             },
             ...mapMutations({
                 setFullScreen: 'SET_FULL_SCREEN',
-                setPlayingState: 'SET_PLAYING_STATE',
-                setCurrentIndex: 'SET_CURRENT_INDEX',
-                setPlayMode: 'SET_PLAY_MODE',
-                setPlayList: 'SET_PLAYLIST'
+                setPlayingState: 'SET_PLAYING_STATE'
             })
         },
         watch: {
