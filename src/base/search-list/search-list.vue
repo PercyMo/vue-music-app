@@ -21,7 +21,7 @@
         props: {
             searches: {
                 type: Array,
-                default: []
+                default: () => []
             }
         },
         methods: {
