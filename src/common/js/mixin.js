@@ -1,4 +1,4 @@
-import {mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 import {playMode} from 'common/js/config'
 import {shuffle} from 'common/js/util'
 
@@ -46,7 +46,8 @@ export const playerMixin = {
         },
         ...mapGetters([
             'mode',
-            'currentSong'
+            'currentSong',
+            'favoriteList'
         ])
     },
     methods: {
@@ -62,6 +63,26 @@ export const playerMixin = {
             this._resetCurrentIndex(list)
             this.setPlayList(list)
         },
+        getFavoriteIcon(song) {
+            if (this.isFavorite(song)) {
+                return 'icon-like_on'
+            } else {
+                return 'icon-like_out'
+            }
+        },
+        toggleFaviorite(song) {
+            if (this.isFavorite(song)) {
+                this.deleteFavoriteList(song)
+            } else {
+                this.saveFavoriteList(song)
+            }
+        },
+        isFavorite(song) {
+            const index = this.favoriteList.findIndex((item) => {
+                return item.id === song.id
+            })
+            return index > -1
+        },
         _resetCurrentIndex(list) {
             let index = list.findIndex((item) => {
                 return item.id === this.currentSong.id
@@ -72,6 +93,10 @@ export const playerMixin = {
             setPlayMode: 'SET_PLAY_MODE',
             setCurrentIndex: 'SET_CURRENT_INDEX',
             setPlayList: 'SET_PLAYLIST'
-        })
+        }),
+        ...mapActions([
+            'saveFavoriteList',
+            'deleteFavoriteList'
+        ])
     }
 }

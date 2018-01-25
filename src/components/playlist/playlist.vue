@@ -12,7 +12,7 @@
                     <div class="heard-r">
                         <span class="add">
                             <i class="icon-add"></i>
-                            <!-- <span>添加到列队</span> -->
+                            <span>添加到列队</span>
                         </span>
                         <span class="empty" @click="showConfirm">
                             <i class="icon-empty"></i>
@@ -28,8 +28,8 @@
                                 <span class="singer">- {{item.singer}}</span>
                             </div>
                             <div class="item-r">
-                                <span class="like">
-                                    <i class="icon-like_out"></i>
+                                <span class="like" @click.stop="toggleFaviorite(item)">
+                                    <i :class="getFavoriteIcon(item)"></i>
                                 </span>
                                 <span class="delete" @click.stop="deleteOne(item)">
                                     <i class="icon-close"></i>
@@ -234,8 +234,7 @@
                     font-weight bold
                     vertical-align middle
             .list-content
-                // padding 0 0 10px 10px
-                padding-left 10px
+                padding 0 0 10px 10px
                 max-height 240px
                 overflow hidden
                 border-1px(rgba(7, 17, 27, 0.1))
@@ -272,6 +271,8 @@
                             padding 0 10px
                             display inline-block
                             font-size $font-size-medium-x
+                            .icon-like_on
+                                color $color-red
             .list-close
                 color $color-theme
                 font-size $font-size-medium

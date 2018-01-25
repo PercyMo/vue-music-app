@@ -73,7 +73,7 @@
                             <i @click="next" class="icon-next_song"></i>
                         </div>
                         <div class="icon i-right">
-                            <i class="icon-like_out"></i>
+                            <i @click="toggleFaviorite(currentSong)" :class="getFavoriteIcon(currentSong)"></i>
                         </div>
                     </div>
                 </div>
@@ -597,6 +597,8 @@
                         .icon-prev_song, .icon-next_song
                             color rgba(255, 255, 255, .8)
                             font-size 30px
+                        .icon-like_on
+                            color $color-red
                     .i-center
                         i
                             color rgba(255, 255, 255, .8)
