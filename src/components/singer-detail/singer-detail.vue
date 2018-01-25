@@ -60,7 +60,7 @@
     }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus" rel="stylesheet/stylus">
     .slide-enter-active, .slide-leave-active
         transition all .3s
         
