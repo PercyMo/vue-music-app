@@ -3,14 +3,21 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-import Recommend from 'components/recommend/recommend'
-import Disc from 'components/disc/disc'
-import MvDetail from 'components/mv-detail/mv-detail'
-import Singer from 'components/singer/singer'
-import SingerDetail from 'components/singer-detail/singer-detail'
-import Rank from 'components/rank/rank'
-import TopList from 'components/top-list/top-list'
-import Search from 'components/search/search'
+const Recommend = r => require.ensure([], () => r(require('components/recommend/recommend')), 'Recommend')
+
+const Disc = r => require.ensure([], () => r(require('components/disc/disc')), 'Disc')
+
+const MvDetail = r => require.ensure([], () => r(require('components/mv-detail/mv-detail')), 'MvDetail')
+
+const Singer = r => require.ensure([], () => r(require('components/singer/singer')), 'Singer')
+
+const SingerDetail = r => require.ensure([], () => r(require('components/singer-detail/singer-detail')), 'SingerDetail')
+
+const Rank = r => require.ensure([], () => r(require('components/rank/rank')), 'Rank')
+
+const TopList = r => require.ensure([], () => r(require('components/top-list/top-list')), 'TopList')
+
+const Search = r => require.ensure([], () => r(require('components/search/search')), 'Search')
 
 export default new Router({
     routes: [

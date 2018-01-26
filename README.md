@@ -32,11 +32,15 @@ $ npm run dev
 ├── src                                         // 源码目录
 │   ├── api                                     // api相关封装
 │   ├── base                                    // 基础组件
+│   │   ├── confirm                             // 确认对话框组件
 │   │   ├── listview                            // 歌手列表组件
 │   │   ├── loading                             // 加载中...
+│   │   ├── no-result                           // 无结果时状态页
 │   │   ├── progress-bar                        // 横向进度条
 │   │   ├── progress-circle                     // 圆形进度条
 │   │   ├── scroll                              // 基础滚动组件
+│   │   ├── search-box                          // 搜索框组件
+│   │   ├── search-list                         // 搜索历史组件
 │   │   ├── silder                              // 幻灯片组件
 │   │   └── song-list                           // 歌曲列表
 │   ├── common                                  // 公共资源文件
@@ -45,15 +49,18 @@ $ npm run dev
 │   │   ├── js                                  // 公用函数封装
 │   │   └── stylus                              // 基础样式文件
 │   ├── components                              // 业务逻辑组件
-│   │   ├── disc                                // 
+│   │   ├── disc                                
 │   │   ├── m-header                            // App头部
 │   │   ├── music-list                          // 音乐专辑页面
+│   │   ├── mv-detail                           // 视频播放页面（后续开发）
 │   │   ├── player                              // 播放器组件
+│   │   ├── playlist                            // 播放列表
 │   │   ├── rank                                // 排行榜
 │   │   ├── recommend                           // 热门歌单推荐
-│   │   ├── search                              // 
+│   │   ├── search                              // 搜索页面
 │   │   ├── singer                              // 歌手组件
 │   │   ├── singer-detail                       // 歌手详情组件
+│   │   ├── suggest                             // 搜索结果列表
 │   │   ├── tab                                 // 全局tab导航
 │   │   └── top-list                            // 
 │   ├── router                                  // 路由相关
