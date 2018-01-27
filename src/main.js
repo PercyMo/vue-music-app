@@ -9,6 +9,9 @@ import Ripple from 'vue-ripple-directive'
 
 import 'common/stylus/index.styl'
 
+/* eslint-disable no-unused-vars */
+// import vConsole from 'vconsole'
+
 // 移动端点击300ms延迟和击穿
 fastclick.attach(document.body)
 
