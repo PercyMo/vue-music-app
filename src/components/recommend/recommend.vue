@@ -54,6 +54,7 @@
             </div>
         </scroll>
         <router-view></router-view>
+        <toast ref="toast" text="玩儿命开发中！！<br>后续更新..."></toast>
     </div>
 </template>
 
@@ -61,6 +62,7 @@
     import Slider from 'base/slider/slider'
     import Loading from 'base/loading/loading'
     import Scroll from 'base/scroll/scroll'
+    import Toast from 'base/toast/toast'
     import {getRecommend, getDiscList, getMvList} from 'api/recommend'
     import {ERR_OK} from 'api/config'
     import {playlistMixin} from 'common/js/mixin'
@@ -138,6 +140,8 @@
                 this.setDisc(item)
             },
             selectMv() {
+                this.$refs.toast.show()
+                return
                 this.$router.push({
                     path: '/mvdetail'
                 })
@@ -149,7 +153,8 @@
         components: {
             Slider,
             Loading,
-            Scroll
+            Scroll,
+            Toast
         }
     }
 </script>

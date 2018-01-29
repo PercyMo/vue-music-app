@@ -32,6 +32,7 @@ $ npm run dev
 ├── src                                         // 源码目录
 │   ├── api                                     // api相关封装
 │   ├── base                                    // 基础组件
+│   │   ├── toast                               // 文字提示组件
 │   │   ├── confirm                             // 确认对话框组件
 │   │   ├── listview                            // 歌手列表组件
 │   │   ├── loading                             // 加载中...

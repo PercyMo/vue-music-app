@@ -146,7 +146,7 @@
             },
             highlightText(str) {
                 const str1 = this.query
-                const str2 = `<em>${str1}</em>`
+                const str2 = `<em style="color: #4f94cd; font-style: normal">${str1}</em>`
                 return str.replace(new RegExp(`${str1}`, 'g'), str2)
             },
             ...mapMutations({
