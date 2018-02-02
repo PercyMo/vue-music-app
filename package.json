@@ -19,6 +19,7 @@
         "js-base64": "^2.4.0",
         "jsonp": "0.2.1",
         "velocity-animate": "^1.5.0",
+        "create-keyframe-animation": "^0.1.0",
         "vue": "^2.4.2",
         "vue-lazyload": "^1.1.4",
         "vue-ripple-directive": "^2.0.1",

@@ -1,6 +1,10 @@
 <template>
     <div class="m-player" v-show="playlist.length">
-        <transition name="normal">
+        <transition name="normal"
+                @enter="enter"
+                @after-enter="afterEnter"
+                @leave="leave"
+                @after-leave="afterLeave">
             <div class="normal-player" v-show="fullScreen">
                 <div class="background">
                     <img :src="currentSong.image" width="auto" height="100%">
@@ -17,18 +21,18 @@
                     @touchmove.prevent="middleTouchMove"
                     @touchend="middleTouchEnd">
                     <div class="middle-l" ref="middleL">
-                        <transition
+                        <!-- <transition
                             @enter="enter"
                             @leave="leave"
                             @after-leave="afterLeave"
                             :css="false"
-                        >
-                            <div class="cd-wrapper" v-show="fullScreen">
+                        > -->
+                            <div class="cd-wrapper" ref="cdWrapper">
                                 <div class="cd" :class="cdCls">
                                     <img class="image" :src="currentSong.image">
                                 </div>
                             </div>
-                        </transition>
+                        <!-- </transition> -->
                         <div class="playing-lyric-wrapper">
                             <div class="playing-lyric">{{playingLyric}}</div>
                         </div>
@@ -108,7 +112,8 @@
     import ProgressBar from 'base/progress-bar/progress-bar'
     import ProgressCircle from 'base/progress-circle/progress-circle'
     import Playlist from 'components/playlist/playlist'
-    import Velocity from 'velocity-animate'
+    // import Velocity from 'velocity-animate'
+    import animations from 'create-keyframe-animation'
     import {prefixStyle} from 'common/js/dom'
     import {playMode} from 'common/js/config'
     import {playerMixin} from 'common/js/mixin'
@@ -166,22 +171,60 @@
             open() {
                 this.setFullScreen(true)
             },
+            // enter(el, done) {
+            //     const {x, y, scale} = this._getPosAndScale()
+
+            //     Velocity(el, { translateY: y, translateX: x, scale: scale }, { duration: 0 }, { easing: "linear" } )
+            //     Velocity(el, { translateY: 0, translateX: 0, scale: 1.1 }, { duration: 300 }, { easing: "linear" })
+            //     Velocity(el, { scale: 1 }, { easing: "ease" }, { duration: 30 }, { complete: done })
+            // },
+            // leave(el, done) {
+            //     el.style.transition = 'all 0.4s'
+            //     const {x, y, scale} = this._getPosAndScale()
+            //     el.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
+            //     el.addEventListener('transitionend', done)
+            // },
             enter(el, done) {
                 const {x, y, scale} = this._getPosAndScale()
 
-                Velocity(el, { translateY: y, translateX: x, scale: scale }, { duration: 0 }, { easing: "linear" } )
-                Velocity(el, { translateY: 0, translateX: 0, scale: 1.1 }, { duration: 300 }, { easing: "linear" })
-                Velocity(el, { scale: 1 }, { easing: "ease" }, { duration: 30 }, { complete: done })
+                let animation = {
+                    0: {
+                        transform: `translate3d(${x}px,${y}px,0) scale(${scale})`
+                    },
+                    60: {
+                        transform: `translate3d(0,0,0) scale(1.1)`
+                    },
+                    100: {
+                        transform: `translate3d(0,0,0) scale(1)`
+                    }
+                }
+
+                animations.registerAnimation({
+                    name: 'move',
+                    animation,
+                    presets: {
+                        duration: 400,
+                        easing: 'linear'
+                    }
+                })
+
+                animations.runAnimation(this.$refs.cdWrapper, 'move', done)
+            },
+            afterEnter() {
+                animations.unregisterAnimation('move')
+                this.$refs.cdWrapper.style.animation = ''
             },
             leave(el, done) {
-                el.style.transition = 'all 0.4s'
+                this.$refs.cdWrapper.style.transition = 'all 0.4s'
                 const {x, y, scale} = this._getPosAndScale()
-                el.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
-                el.addEventListener('transitionend', done)
+                this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
+                this.$refs.cdWrapper.addEventListener('transitionend', done)
             },
             afterLeave(el) {
-                el.style.transition = ''
-                el.style[transform] = ''
+                // el.style.transition = ''
+                // el.style[transform] = ''
+                this.$refs.cdWrapper.style.transition = ''
+                this.$refs.cdWrapper.style[transform] = ''
             },
             togglePlaying() {
                 if (!this.songReady) {
