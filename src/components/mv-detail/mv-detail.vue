@@ -19,6 +19,7 @@
         },
         data() {
             return {
+                curr: 0
             }
         },
         computed: {
