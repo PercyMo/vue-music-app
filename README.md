@@ -24,7 +24,7 @@ $ npm run dev
 
 ## 部分截图
 ### 推荐页
-<img src="https://github.com/PosyMo/vue-music-app/screenshots/recommend.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/screenshots/recommend.gif" width="365" height="619"/>
+<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/recommend.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/recommend.gif" width="365" height="619"/>
 ## 项目布局
 ```
 .
