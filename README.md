@@ -23,8 +23,16 @@ $ npm run dev
 6. 原生touch事件
 
 ## 部分截图
-### 推荐页
+#### 推荐页
 <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/recommend.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/recommend.gif" width="365" height="619"/>
+#### 歌手页
+<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/singer.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/singer.gif" width="365" height="619"/>
+#### 排行页
+<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/rank.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/rank.gif" width="365" height="619"/>
+#### 搜索页
+<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/search.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/search.gif" width="365" height="619"/>
+#### 播放器界面
+<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/player.gif" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/playlist.gif" width="365" height="619"/>
 ## 项目布局
 ```
 .
