@@ -24,15 +24,15 @@ $ npm run dev
 
 ## 部分截图
 #### 推荐页
-<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/recommend.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/recommend.gif" width="365" height="619"/>
+<img src="http://img.vanilla.ink/me/webproject/vue-music-app/recommend.png" width="365" height="619"/> <img src="http://img.vanilla.ink/me/webproject/vue-music-app/recommend.gif" width="365" height="619"/>
 #### 歌手页
-<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/singer.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/singer.gif" width="365" height="619"/>
+<img src="http://img.vanilla.ink/me/webproject/vue-music-app/singer.png" width="365" height="619"/> <img src="http://img.vanilla.ink/me/webproject/vue-music-app/singer.gif" width="365" height="619"/>
 #### 排行页
-<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/rank.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/rank.gif" width="365" height="619"/>
+<img src="http://img.vanilla.ink/me/webproject/vue-music-app/rank.png" width="365" height="619"/> <img src="http://img.vanilla.ink/me/webproject/vue-music-app/rank.gif" width="365" height="619"/>
 #### 搜索页
-<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/search.png" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/search.gif" width="365" height="619"/>
+<img src="http://img.vanilla.ink/me/webproject/vue-music-app/search.png" width="365" height="619"/> <img src="http://img.vanilla.ink/me/webproject/vue-music-app/search.gif" width="365" height="619"/>
 #### 播放器界面
-<img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/player.gif" width="365" height="619"/> <img src="https://github.com/PosyMo/vue-music-app/blob/master/screenshots/playlist.gif" width="365" height="619"/>
+<img src="http://img.vanilla.ink/me/webproject/vue-music-app/player.gif" width="365" height="619"/> <img src="http://img.vanilla.ink/me/webproject/vue-music-app/playlist.gif" width="365" height="619"/>
 ## 项目布局
 ```
 .
