@@ -1,7 +1,7 @@
 <template>
     <div class="m-header">
         <div class="m-header-icon"></div>
-        <h1 class="m-header-title">Music 音乐台-听我所爱</h1>
+        <h1 class="m-header-title">Music 音乐台-唯我所爱</h1>
     </div>
 </template>
 
