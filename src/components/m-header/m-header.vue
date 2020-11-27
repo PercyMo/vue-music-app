@@ -20,8 +20,8 @@
         color $color-text-w
         text-align center
         font-size 0
-        // background-color $color-theme
-        background-color #f55
+        background-color $color-theme
+        // background-color #f55
     .m-header-icon
         margin-top: 6px
         width 88px
