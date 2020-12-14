@@ -1,7 +1,7 @@
 <template>
     <div class="m-header">
         <div class="m-header-icon"></div>
-        <h1 class="m-header-title">Music 音乐台-唯我所爱 2020.11.04</h1>
+        <h1 class="m-header-title">Music 音乐台-唯我所爱</h1>
     </div>
 </template>
 
@@ -20,8 +20,8 @@
         color $color-text-w
         text-align center
         font-size 0
-        background-color $color-theme
-        // background-color #f55
+        // background-color $color-theme
+        background-color #f55
     .m-header-icon
         margin-top: 6px
         width 88px
